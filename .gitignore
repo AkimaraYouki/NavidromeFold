@@ -1,5 +1,23 @@
+# Local IDE / Android / Gradle state
 .gradle/
 .idea/
 local.properties
 **/build/
 *.iml
+
+# Local credentials and signing material
+.env
+.env.*
+!.env.example
+*.jks
+*.keystore
+key.properties
+
+# Generated packages and scratch work
+*.apk
+*.aab
+/outputs/
+/work/
+__pycache__/
+*.py[cod]
+.DS_Store

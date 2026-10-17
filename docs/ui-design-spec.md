@@ -1,3 +1,5 @@
+> 초기 UI 설계 자료입니다. 현재 구현 현황은 [README](../README.md)와 [빌드 상태](../BUILD-STATUS.md)를 참고하세요. 아래의 미구현 표기는 작성 당시 기준입니다.
+
 # NaviFold UI 리디자인 명세 및 Media3 알림 진단 지침
 
 본 문서는 Android 네이티브(Java View 기반) Navidrome 클라이언트 **NaviFold**의 화면 구조 개편, 폴더블 반응형 레이아웃(접힌 화면·펼친 화면), 수치화된 디자인 토큰(dp/sp), 상호작용 상태 정의, 그리고 시스템 미디어 알림 미표시 문제의 기술 진단을 위해 작성된 구현 명세서입니다. 구현 담당 에이전트는 본 문서의 수치와 완료 조건(DoD)을 기준으로 작업을 진행하십시오.
@@ -7,7 +9,7 @@
 ## 0. 검토 전제 및 추가로 확보해야 할 프로젝트 자료
 
 ### 0.1 자료 접근 범위 고지
-- 현재 검토 환경에는 로컬 경로로 언급된 소스 코드 아카이브(`/home/parksuho/Documents/Codex/2026-10-16/d/outputs/NavidromeFold.zip`)와 실제 휴대폰 캡처 화면이 첨부되어 있지 않습니다.
+- 현재 검토 환경에는 로컬 경로로 언급된 소스 코드 아카이브(`outputs/NavidromeFold.zip`)와 실제 휴대폰 캡처 화면이 첨부되어 있지 않습니다.
 - 따라서 본 문서는 **보지 않은 실제 화면이나 코드를 열람한 것처럼 가정하지 않으며**, 프롬프트에 명시된 확정 사실과 Android View·[Media3](https://www.google.com/search?q=https%3A%2F%2Fdeveloper.android.com%2Fmedia%2Fmedia3%2Fsession%2Fbackground-playback) 아키텍처에 기반한 구조적 추정을 엄격히 구분하여 기술합니다.
 - 공개 확인되지 않은 미출시 One UI 버전 사양을 공식 규격처럼 인용하지 않으며, 검증된 [Samsung One UI 대형 화면·폴더블 디자인 가이드](https://www.google.com/search?q=https%3A%2F%2Fdeveloper.samsung.com%2Fone-ui%2Flargescreen-and-foldable%2Fintro.html), [Samsung One UI 기본 레이아웃 원칙](https://www.google.com/search?q=https%3A%2F%2Fdeveloper.samsung.com%2Fone-ui%2Flayout%2Fbasic.html), [Android 공식 반응형 뷰 가이드](https://www.google.com/search?q=https%3A%2F%2Fdeveloper.android.com%2Fdevelop%2Fui%2Fviews%2Flayout%2Fbuild-responsive-navigation)를 기준으로 수치를 정의합니다.
 
