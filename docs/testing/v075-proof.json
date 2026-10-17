@@ -1,0 +1,92 @@
+{
+  "buttons": [
+    {
+      "label": "앨범 검색",
+      "widthDp": 48,
+      "heightDp": 48
+    },
+    {
+      "label": "라이브러리로 돌아가기",
+      "widthDp": 48,
+      "heightDp": 48
+    },
+    {
+      "label": "전체 재생",
+      "widthDp": 103.79486846923828,
+      "heightDp": 48
+    },
+    {
+      "label": "셔플",
+      "widthDp": 103.79486846923828,
+      "heightDp": 48
+    },
+    {
+      "label": "대기열 추가",
+      "widthDp": 103.79486846923828,
+      "heightDp": 48
+    },
+    {
+      "label": "즐겨찾기",
+      "widthDp": 103.79486846923828,
+      "heightDp": 48
+    },
+    {
+      "label": "곡 옵션",
+      "widthDp": 48,
+      "heightDp": 48
+    },
+    {
+      "label": "곡 옵션",
+      "widthDp": 48,
+      "heightDp": 48
+    },
+    {
+      "label": "곡 옵션",
+      "widthDp": 48,
+      "heightDp": 48
+    }
+  ],
+  "default": [
+    {
+      "strength": 60,
+      "radiusDp": 43.20000076293945,
+      "hasRenderEffect": true
+    }
+  ],
+  "0": {
+    "saved": 0,
+    "backgroundAlpha": 1,
+    "foregroundAlpha": 1,
+    "layers": [
+      {
+        "strength": 0,
+        "radiusDp": 0,
+        "hasRenderEffect": false
+      }
+    ]
+  },
+  "100": {
+    "saved": 100,
+    "backgroundAlpha": 1,
+    "foregroundAlpha": 1,
+    "layers": [
+      {
+        "strength": 100,
+        "radiusDp": 72,
+        "hasRenderEffect": true
+      }
+    ]
+  },
+  "50": {
+    "saved": 50,
+    "backgroundAlpha": 1,
+    "foregroundAlpha": 1,
+    "layers": [
+      {
+        "strength": 50,
+        "radiusDp": 36,
+        "hasRenderEffect": true
+      }
+    ]
+  }
+}

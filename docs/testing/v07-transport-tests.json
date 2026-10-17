@@ -1,0 +1,38 @@
+{
+  "advancing": {
+    "position": 17467,
+    "duration": 120000,
+    "seekable": true,
+    "playing": true,
+    "state": 3,
+    "quality": "MP3 · 48.0 kHz · 320 kbps",
+    "error": ""
+  },
+  "later": {
+    "position": 20677,
+    "duration": 120000,
+    "seekable": true,
+    "playing": true,
+    "state": 3,
+    "quality": "MP3 · 48.0 kHz · 320 kbps",
+    "error": ""
+  },
+  "seek90s": {
+    "position": 90359,
+    "duration": 120010,
+    "seekable": true,
+    "playing": true,
+    "state": 3,
+    "quality": "MP3 · 48.0 kHz · 320 kbps",
+    "error": ""
+  },
+  "paused": {
+    "position": 90289,
+    "duration": 120010,
+    "seekable": true,
+    "playing": false,
+    "state": 3,
+    "quality": "MP3 · 48.0 kHz · 320 kbps",
+    "error": ""
+  }
+}

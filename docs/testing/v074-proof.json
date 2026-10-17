@@ -1,0 +1,25 @@
+{
+  "button_height_48dp_check_passed": true,
+  "opacity_checks": {
+    "0": {
+      "actual_alpha_assertion_passed": true,
+      "expected_background_alpha": 0,
+      "expected_foreground_alpha": 1
+    },
+    "50": {
+      "actual_alpha_assertion_passed": true,
+      "expected_background_alpha": 0.5,
+      "expected_foreground_alpha": 1
+    },
+    "100": {
+      "actual_alpha_assertion_passed": true,
+      "expected_background_alpha": 1,
+      "expected_foreground_alpha": 1
+    }
+  },
+  "final_82_percent": {
+    "saved": 82,
+    "backgroundAlpha": 0.8199999928474426,
+    "foregroundAlpha": 1
+  }
+}

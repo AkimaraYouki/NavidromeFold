@@ -1,0 +1,62 @@
+{
+  "albumLongPress": {
+    "ids": [
+      "s000-0",
+      "s000-1",
+      "s000-2"
+    ],
+    "playing": false
+  },
+  "migration": {
+    "version": 2,
+    "legacyPreserved": true
+  },
+  "queueToggleEnabled": true,
+  "emptyQueueToggleDisabled": true,
+  "appendTwoAlbums": [
+    "s000-0",
+    "s000-1",
+    "s000-2",
+    "s012-0",
+    "s012-1",
+    "s012-2"
+  ],
+  "playNextAlbumOrder": [
+    "s000-0",
+    "s000-0",
+    "s000-2",
+    "s000-1",
+    "s000-2",
+    "s012-0",
+    "s012-1",
+    "s012-2"
+  ],
+  "playLater": [
+    "s000-0",
+    "s000-0",
+    "s000-2",
+    "s000-1",
+    "s000-2",
+    "s012-0",
+    "s012-1",
+    "s012-2",
+    "s000-1"
+  ],
+  "removeAllMatchingOccurrences": [
+    "s000-2",
+    "s000-1",
+    "s000-2",
+    "s012-0",
+    "s012-1",
+    "s012-2",
+    "s000-1"
+  ],
+  "summaryNeedsLoginGuard": true,
+  "summaryCache": {
+    "cached": "테스트 캐시 · 2000년, 3곡의 Jazz 앨범.",
+    "otherAccountEmpty": true,
+    "changedMetadataEmpty": true,
+    "databaseVersion": 2
+  },
+  "compactSelectionAndBackClear": true
+}

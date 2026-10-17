@@ -1,0 +1,6 @@
+package dev.navifold.player;
+import android.content.*;import org.json.*;
+final class SmartStatus {
+ static void record(Context c,String value){android.content.SharedPreferences p=SmartPlayback.settings(c);JSONArray out=new JSONArray();try{JSONArray old=new JSONArray(p.getString("statusLog","[]"));for(int i=Math.max(0,old.length()-7);i<old.length();i++)out.put(old.get(i));}catch(Exception ignored){}try{out.put(new JSONObject().put("scope",SmartSession.scope).put("at",System.currentTimeMillis()).put("text",value));}catch(Exception ignored){}p.edit().putString("status",value).putString("statusScope",SmartSession.scope).putString("statusLog",out.toString()).apply();}
+ static String history(Context c){StringBuilder out=new StringBuilder();try{JSONArray rows=new JSONArray(SmartPlayback.settings(c).getString("statusLog","[]"));java.text.DateFormat fmt=new java.text.SimpleDateFormat("HH:mm:ss",java.util.Locale.getDefault());for(int i=rows.length()-1;i>=0;i--){JSONObject row=rows.getJSONObject(i);if(SmartSession.scope.equals(row.optString("scope")))out.append(fmt.format(new java.util.Date(row.optLong("at")))).append("  ").append(row.optString("text")).append("\n");}}catch(Exception ignored){}return out.length()==0?"아직 추천 기록이 없습니다.":out.toString().trim();}
+}

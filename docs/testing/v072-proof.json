@@ -1,0 +1,8 @@
+{
+  "total_albums": 235,
+  "nav_labels_removed": true,
+  "accessible_names_retained": true,
+  "album_actions_icons": true,
+  "player_info_icon": true,
+  "queue_icons": true
+}

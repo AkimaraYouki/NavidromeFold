@@ -1,0 +1,10 @@
+{
+  "albumCount": 235,
+  "encryptedStorage": true,
+  "autoLoginAfterProcessDeath": true,
+  "playerAlbumLink": true,
+  "songSort": true,
+  "favoriteSort": true,
+  "foldedDragDismiss": true,
+  "logoutRemovesSavedLogin": true
+}

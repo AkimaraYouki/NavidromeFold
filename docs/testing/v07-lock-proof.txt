@@ -1,0 +1,2 @@
+Broadcasting: Intent { flg=0x400000 cmp=dev.navifold.player.qa/dev.navifold.player.PlaybackProbe (has extras) }
+Broadcast completed: result=0, data="{"locked":true,"trackPopup":true,"visibleActivities":0,"position":902,"duration":120000,"seekable":true,"playing":true,"state":3,"quality":"MP3 · 48.0 kHz · 320 kbps","error":""}"

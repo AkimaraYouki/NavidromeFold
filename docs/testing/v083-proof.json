@@ -1,0 +1,25 @@
+{
+  "softwareRoundedCover": {
+    "cornerClipped": true,
+    "centerVisible": true
+  },
+  "aiBusy": {
+    "note": "AI · 추천 중…",
+    "progressVisibility": 0
+  },
+  "aiDone": {
+    "note": "AI · LOCAL · 10곡 추가",
+    "progressVisibility": 4
+  },
+  "dataQualityPolicy": {
+    "meteredOriginalConverted": true,
+    "format": "mp3",
+    "bitrate": "192",
+    "wifiKeepsOriginal": true
+  },
+  "usage": {
+    "rx": 1982288,
+    "tx": 19388,
+    "summary": "모바일 · QA · 요금제 연결\n\n오늘 NaviFold 전체 · 2.00 MB\n수신 1.98 MB · 송신 19.39 kB\n요금제 연결 추정 · 128 B\n모바일 추정 · 128 B"
+  }
+}

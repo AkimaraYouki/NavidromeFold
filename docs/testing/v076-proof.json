@@ -1,0 +1,28 @@
+{
+  "songs_total": 705,
+  "filter_count": 3,
+  "play_filtered_queue": {
+    "count": 3,
+    "title": "Track 3 - Album 234"
+  },
+  "drag_0": {
+    "miniRestored": true,
+    "sheetRemoved": true,
+    "ringDetachEvents": 0
+  },
+  "drag_1": {
+    "miniRestored": true,
+    "sheetRemoved": true,
+    "ringDetachEvents": 0
+  },
+  "drag_2": {
+    "miniRestored": true,
+    "sheetRemoved": true,
+    "ringDetachEvents": 0
+  },
+  "wide": {
+    "songCount": 705,
+    "miniRestored": true,
+    "sheetRemoved": true
+  }
+}

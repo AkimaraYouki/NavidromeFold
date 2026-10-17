@@ -1,0 +1,33 @@
+plugins { id 'com.android.application' }
+android {
+    namespace 'dev.navifold.player'
+    compileSdk 35
+    defaultConfig {
+        applicationId 'dev.navifold.player'
+        minSdk 26
+        targetSdk 35
+        versionCode 23
+        versionName '0.8.4'
+        manifestPlaceholders = [appLabel: 'NaviFold']
+    }
+    buildTypes {
+        qa {
+            initWith debug
+            applicationIdSuffix '.qa'
+            versionNameSuffix '-qa'
+            manifestPlaceholders = [appLabel: 'NaviFold QA']
+            matchingFallbacks = ['debug']
+        }
+    }
+    sourceSets { qa { manifest.srcFile 'src/qa/AndroidManifest.xml' } }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+}
+
+dependencies {
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
+    implementation 'androidx.media3:media3-exoplayer:1.8.0'
+    implementation 'androidx.media3:media3-session:1.8.0'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.json:json:20240303'
+}

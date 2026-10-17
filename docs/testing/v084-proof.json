@@ -1,0 +1,17 @@
+{
+  "settingsCache": {
+    "reused": true,
+    "invalidated": true
+  },
+  "pausePlay": {
+    "observing": true,
+    "full": 0,
+    "partialRows": 0
+  },
+  "nextTrack": {
+    "observing": true,
+    "full": 0,
+    "partialRows": 2
+  },
+  "queueClear": true
+}

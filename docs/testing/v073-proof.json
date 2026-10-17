@@ -1,0 +1,142 @@
+{
+  "baseline": {
+    "indicatorEligible": true,
+    "displayRotation": 0,
+    "ringIdentity": 194967742,
+    "ringDetachEvents": 0,
+    "locked": false,
+    "trackPopup": false,
+    "visibleActivities": 1,
+    "position": 0,
+    "duration": 120000,
+    "seekable": true,
+    "playing": false,
+    "state": 3,
+    "quality": "MP3 · 48.0 kHz · 320 kbps",
+    "error": ""
+  },
+  "transitions": [
+    {
+      "tab": "앨범",
+      "ringIdentity": 194967742,
+      "detachEvents": 0
+    },
+    {
+      "tab": "설정",
+      "ringIdentity": 194967742,
+      "detachEvents": 0
+    },
+    {
+      "tab": "보관함",
+      "ringIdentity": 194967742,
+      "detachEvents": 0
+    },
+    {
+      "tab": "폴더",
+      "ringIdentity": 194967742,
+      "detachEvents": 0
+    },
+    {
+      "tab": "앨범",
+      "ringIdentity": 194967742,
+      "detachEvents": 0
+    },
+    {
+      "tab": "설정",
+      "ringIdentity": 194967742,
+      "detachEvents": 0
+    },
+    {
+      "tab": "보관함",
+      "ringIdentity": 194967742,
+      "detachEvents": 0
+    },
+    {
+      "tab": "폴더",
+      "ringIdentity": 194967742,
+      "detachEvents": 0
+    }
+  ],
+  "tilts": {
+    "tilted": {
+      "indicatorEligible": true,
+      "displayRotation": 0,
+      "ringIdentity": 194967742,
+      "ringDetachEvents": 0,
+      "locked": false,
+      "trackPopup": false,
+      "visibleActivities": 1,
+      "position": 0,
+      "duration": 120000,
+      "seekable": true,
+      "playing": false,
+      "state": 3,
+      "quality": "MP3 · 48.0 kHz · 320 kbps",
+      "error": ""
+    },
+    "flat": {
+      "indicatorEligible": true,
+      "displayRotation": 0,
+      "ringIdentity": 194967742,
+      "ringDetachEvents": 0,
+      "locked": false,
+      "trackPopup": false,
+      "visibleActivities": 1,
+      "position": 0,
+      "duration": 120000,
+      "seekable": true,
+      "playing": false,
+      "state": 3,
+      "quality": "MP3 · 48.0 kHz · 320 kbps",
+      "error": ""
+    },
+    "sideways-with-rotation-lock": {
+      "indicatorEligible": true,
+      "displayRotation": 0,
+      "ringIdentity": 194967742,
+      "ringDetachEvents": 0,
+      "locked": false,
+      "trackPopup": false,
+      "visibleActivities": 1,
+      "position": 0,
+      "duration": 120000,
+      "seekable": true,
+      "playing": false,
+      "state": 3,
+      "quality": "MP3 · 48.0 kHz · 320 kbps",
+      "error": ""
+    },
+    "upright": {
+      "indicatorEligible": true,
+      "displayRotation": 0,
+      "ringIdentity": 194967742,
+      "ringDetachEvents": 0,
+      "locked": false,
+      "trackPopup": false,
+      "visibleActivities": 1,
+      "position": 0,
+      "duration": 120000,
+      "seekable": true,
+      "playing": false,
+      "state": 3,
+      "quality": "MP3 · 48.0 kHz · 320 kbps",
+      "error": ""
+    }
+  },
+  "unfolded": {
+    "indicatorEligible": false,
+    "displayRotation": 0,
+    "ringIdentity": 194967742,
+    "ringDetachEvents": 0,
+    "locked": false,
+    "trackPopup": false,
+    "visibleActivities": 1,
+    "position": 0,
+    "duration": 120000,
+    "seekable": true,
+    "playing": false,
+    "state": 3,
+    "quality": "MP3 · 48.0 kHz · 320 kbps",
+    "error": ""
+  }
+}
