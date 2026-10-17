@@ -1,220 +1,53 @@
 # NaviFold
 
-**Navidrome를 위한 Android 음악 플레이어.** 앨범 중심 탐색, 폴더 재생, 편집 가능한 큐와 취향 기반 자동 재생을 접힘·펼침 화면에 맞춰 제공합니다.
+Navidrome 음악을 휴대폰에서 듣기 위해 만든 Android 플레이어입니다.
+앨범과 폴더 단위로 음악을 찾고, 폴드의 접힌 화면과 펼친 화면에 맞춰 사용할 수 있습니다.
 
-Android music player for Navidrome, with an album-first library, folder playback, queue editing, and metadata-based recommendations.
-
-현재 버전 **0.8.4** · Android **8.0 이상(API 26+)** · Java / Android Views / Media3 · [GPL-3.0](LICENSE)
-
-> 개인 개발 프로젝트입니다. 삼성 폴더블 기기와 Pixel Fold 에뮬레이터로 확인했으며, 모든 Navidrome 기능이나 모든 기기에서의 동작을 보장하지는 않습니다.
-
-## 화면
-
-합성 표지와 무음 음원으로 구성한 테스트 라이브러리 화면입니다.
+Android 8.0 이상 · v0.8.4
 
 <p>
-  <img src="docs/images/albums.png" alt="펼친 화면의 앨범 라이브러리" width="48%">
-  <img src="docs/images/now-playing.png" alt="펼친 NOW PLAYING과 하단 AI 상태" width="48%">
+  <img src="docs/images/albums.png" alt="앨범 목록" width="48%">
+  <img src="docs/images/now-playing.png" alt="재생 화면" width="48%">
 </p>
 
-## 주요 기능
+*테스트용 앨범과 음원으로 촬영한 화면입니다.*
 
-| 영역 | 지원 내용 |
-| --- | --- |
-| 라이브러리 | 전체 앨범·곡 연속 스크롤, 커버 크기 프리셋, 검색, 즐겨찾기 앨범 |
-| 폴더 | 서버가 제공하는 경로를 바탕으로 탐색·재생, 하위 폴더 포함 여부 선택 |
-| 정렬 | 최근 추가, 제목·아티스트, 발매일 양방향, 재생 횟수, 디스크·트랙 순서 |
-| 큐 | 앨범 길게 눌러 추가, 곡 다중 선택, Play next / Play later / Remove, 드래그 순서 변경 |
-| 재생 | 원본 또는 MP3 최대 192/320 kbps, 탐색·반복·셔플, 시스템 미디어 컨트롤 |
-| NOW PLAYING | 앨범 배경 블러, 메타데이터, 앨범명 터치 이동, 조용한 AI 상태·최근 기록 |
-| SMART DJ | 자동 큐 보충, 로컬 추천 대체, 선택적 취향 학습·자동 넘기기, 장르 유지 강도 |
-| 앨범 정보 | 서버 태그, 선택적 MusicBrainz 보완, 요청 시 AI 앨범 요약·캐시 |
-| 데이터 | 오늘 앱 수신·송신량, 요금제 연결 경고, 인코딩 추천, 선택적 자동 절약 |
-| 화면 | 접힘·펼침 레이아웃, 다크·라이트 테마, Pretendard, 조절 가능한 음질 링·아일랜드 |
-| 계정 | 서버 로그인 정보 기기 암호화 저장, 재실행 시 자동 로그인, 로그아웃 시 삭제 |
+## 기능
 
-플레이리스트 조회·재생은 지원합니다. 오프라인 다운로드, 스마트 플레이리스트 편집, 가사 표시, 오디오 자체를 분석하는 추천은 현재 제공하지 않습니다.
+- 앨범·곡·폴더 탐색, 검색과 정렬, 커버 크기 조절
+- 곡 다중 선택, 다음에 재생, 큐 추가·삭제와 순서 변경
+- 원본 / MP3 재생, 잠금화면과 알림 패널 컨트롤
+- 취향과 장르를 반영한 자동 큐 보충, ChatGPT 추천 연동
+- MusicBrainz 앨범 정보, AI 앨범 요약
+- 데이터 사용량 확인·경고, 모바일 연결 시 음질 절약
+- 자동 로그인, 음질 인디케이터, 다크·라이트 테마
 
-## 설치와 빌드
+## 빌드
 
-### 개발 환경
-
-- Android Studio 또는 Android SDK 명령줄 도구
-- JDK 21: 현재 검증에 사용한 버전
-- Android SDK Platform 35 및 빌드 도구
-- 포함된 Gradle Wrapper 8.13 / Android Gradle Plugin 8.13.2
+Android Studio에서 프로젝트를 열면 됩니다. JDK 21과 Android SDK 35를 사용했습니다.
 
 ```bash
 git clone https://github.com/AkimaraYouki/NavidromeFold.git
 cd NavidromeFold
-```
-
-Android Studio에서 이 폴더를 열어 SDK 위치를 지정하고 Gradle 동기화를 실행합니다. 명령줄에서는 로컬에만 보관하는 `local.properties`에 SDK 위치를 지정할 수 있습니다.
-
-```properties
-sdk.dir=/path/to/Android/Sdk
-```
-
-```bash
 ./gradlew assembleDebug
 ```
 
-Windows에서는 `gradlew.bat assembleDebug`를 사용합니다. 생성된 APK:
+SDK를 찾지 못하면 `local.properties`에 `sdk.dir=/path/to/Android/Sdk`를 지정하세요.
+APK는 `app/build/outputs/apk/debug/app-debug.apk`에 생성됩니다.
 
-```text
-app/build/outputs/apk/debug/app-debug.apk
-```
+## 사용
 
-USB 디버깅을 켠 기기에 설치:
+설정의 **서버 · 계정**에 Navidrome 주소와 계정을 입력하세요. Tailscale도 사용할 수 있습니다. HTTP 연결은 debug/qa 빌드에서 지원하며 release는 HTTPS가 필요합니다.
 
-```bash
-adb install -r app/build/outputs/apk/debug/app-debug.apk
-```
+앨범을 길게 누르면 큐에 추가됩니다. 곡을 길게 눌러 여러 곡을 선택할 수도 있습니다.
+자동 보충은 큐 팝업의 **AI** 스위치로 켭니다. ChatGPT 연결 없이도 로컬 추천을 사용할 수 있습니다.
 
-저장소에는 APK나 서명 키를 포함하지 않습니다. 기존 설치와 다른 키로 빌드한 APK는 덮어쓸 수 없으므로 업데이트에는 같은 서명 키가 필요합니다. 앱을 삭제하면 기기 내부의 로그인·학습 데이터도 삭제됩니다. 릴리스 배포 시 서명 설정은 별도로 구성해야 합니다.
+ChatGPT 연동은 계정별 사용 가능 여부 확인이 필요합니다. 외부 추천·정보 조회에는 곡 메타데이터를 사용하며 음원 파일은 보내지 않습니다. 자세한 동작은 [AI 추천 문서](docs/AI-RECOMMENDATION.md)에 정리했습니다.
 
-### 테스트
+개발 중인 앱으로, 오프라인 다운로드와 가사는 아직 지원하지 않습니다.
+[변경 이력](CHANGELOG.md) · [검증 기록](BUILD-STATUS.md) · [테스트 서버](tools/README.md)
 
-```bash
-./gradlew testDebugUnitTest lintDebug
-./gradlew assembleQa
-```
+## 라이선스
 
-`qa` 빌드는 `dev.navifold.player.qa`라는 별도 패키지입니다. 테스트용 receiver와 fixture 제어 기능이 포함되므로 일상용 앱으로 배포하지 마세요. 일반 `debug` / `release` 빌드에는 QA receiver가 포함되지 않습니다.
-
-테스트 서버 실행과 에뮬레이터 연결은 [tools/README.md](tools/README.md)를 참고하세요.
-
-## 서버 연결
-
-1. 설정 → **서버 · 계정**에서 Navidrome 기본 주소와 계정을 입력합니다.
-2. 연결 성공 시 로그인 정보를 Android Keystore 기반 AES-GCM으로 기기에 저장합니다.
-3. 다음 실행부터 자동 연결하며, 로그아웃하면 저장된 로그인 정보를 삭제합니다.
-4. 폴더 탐색은 설정 → **폴더 동기화**를 실행합니다.
-
-주소 예:
-
-```text
-https://music.example.com
-http://100.101.102.103:4553
-```
-
-두 번째 주소는 형식 설명용 Tailscale IP 예입니다. 실제 서버 주소로 바꾸고 IP 구분에는 쉼표가 아닌 점을 사용하세요. 휴대폰과 서버가 같은 tailnet에 접속되어 있고 서버 포트 접근이 허용되어야 합니다.
-
-HTTP는 `debug` / `qa` 빌드에서 허용합니다. `release`는 HTTPS를 사용해야 합니다. `/rest/...` 주소가 아닌 서버의 기본 URL을 입력하세요.
-
-## 앨범과 큐 사용법
-
-- 앨범을 **길게 누르면 전곡을 큐 끝에 추가**합니다. 빈 큐에 추가할 때는 자동 재생하지 않습니다.
-- 앨범 안의 곡을 **길게 눌러 다중 선택**한 뒤 `Play next`, `Play later`, `Remove`를 사용합니다.
-- `Remove`는 선택한 곡 ID와 일치하는 큐 항목을 제거합니다. 음악 파일을 삭제하지 않습니다.
-- 큐 팝업의 손잡이로 순서를 바꾸고 행별 삭제 버튼으로 제거합니다.
-- 하단 미니 플레이어를 누르면 NOW PLAYING이 열립니다. 앨범명을 누르면 해당 앨범으로 이동합니다.
-- 앨범·곡·즐겨찾기와 앨범 내부의 정렬 버튼은 해당 화면의 정렬을 변경합니다. 설정의 정렬은 기본값이며 화면별 선택은 앱 실행 중 유지됩니다.
-- 문자 정렬 우선순위는 숫자 → 한글 → 영어 → 기타입니다. 영어 관사 제외 옵션을 지원하며 누락된 날짜는 마지막에 표시합니다.
-
-## SMART DJ
-
-큐 팝업의 **AI** 스위치는 곡이 1개 이상 있을 때 사용할 수 있습니다. 큐를 비우면 자동으로 꺼집니다.
-
-자동 보충은 재생 중, 반복·셔플이 꺼져 있고 현재 곡 뒤에 **3곡 이하**가 남았을 때 시작합니다.
-
-1. 사용자 직접 선택한 곡·앨범을 흐름 기준으로 유지합니다.
-2. 기존 큐·최근 기록·강한 비선호 곡을 제외하고 로컬 색인에서 최대 40곡을 추립니다.
-3. ChatGPT가 연결되어 있으면 후보 안에서 최대 10곡의 순서를 선택합니다.
-4. 연결 실패 또는 요청 제한 시, 로컬 추천 대체가 켜져 있으면 앱 자체 점수로 선택합니다.
-5. 추가 직전에도 장르 조건과 중복을 검사하고 기존 큐 끝에 붙입니다.
-
-ChatGPT 자동 요청은 최소 2분 간격, 시간당 최대 6회로 제한하며 실패 시 대기 시간을 늘립니다. AI가 직접 넣은 곡의 순서를 재정렬하지 않습니다. 현재 구현은 GPT-6 계열을 모델 선택 대상에서 제외합니다.
-
-### 장르와 취향
-
-설정 → **SMART DJ → 장르 유지**:
-
-| 모드 | 동작 |
-| --- | --- |
-| 엄격하게 | 같은 장르 태그를 요구하며, 기준 장르가 없으면 보충하지 않음 |
-| 자연스럽게 — 기본 | Pop / Synth-pop 등 정의된 가까운 계열 허용 |
-| 다양하게 | 장르·음악권·언어 제한 해제 |
-
-엄격하게 / 자연스럽게에서는 명시된 J-pop·K-pop 등의 음악권 충돌과 알려진 언어 충돌을 제한합니다. 조건에 맞는 곡이 없으면 제한을 풀지 않고 보충을 멈춥니다. 가수 이름이나 발매 국가만으로 곡의 언어를 추측하지 않습니다.
-
-추천곡으로 이동해도 원래 기준을 유지하고, 라이브러리에서 다른 곡을 직접 재생하면 새 기준을 설정합니다. 설정 변경은 다음 보충부터 적용되며 이미 들어간 큐를 지우지는 않습니다.
-
-**감상 기록 학습**과 **취향 기반 자동 넘기기**는 별도로 켭니다. 완청·직접 스킵·명시적 선호를 반영하며, 자동 넘기기는 추천으로 추가한 곡에만 적용하고 연속 최대 2곡으로 제한합니다. 네트워크 오류를 싫어요로 학습하지 않습니다.
-
-### ChatGPT와 MusicBrainz
-
-- 설정 → **ChatGPT 추천**에서 로그인하고 계정에 제공되는 모델을 선택합니다.
-- 연결·모델 사용 가능 여부와 한도는 계정에 따라 달라집니다. 무료 또는 무제한 사용을 보장하지 않으며, API 키 과금으로 자동 전환하지 않습니다.
-- 로그인 정보를 앱에 하드코딩하지 않습니다. OAuth 토큰은 Android Keystore로 암호화해 보관합니다.
-- 추천 시 후보의 곡명·아티스트·앨범·장르·레이블·연도·BPM·언어 태그와 최근 감상 요약을 보냅니다. 음원 파일·서버 비밀번호·서버 URL·원래 서버 곡 ID는 보내지 않습니다.
-- MusicBrainz 보완은 기본으로 켜져 있으며 SMART DJ에서 끌 수 있습니다. 앨범명·아티스트명을 외부 조회에 사용하고 서버 태그를 우선합니다. 결과는 30일 캐시하며 조회 간격을 제한합니다.
-- 앨범 AI 요약은 버튼을 눌렀을 때 생성하며 매번 자동으로 요청하지 않습니다.
-
-실제 ChatGPT 계정 로그인·추론 결과는 환경별 확인이 필요합니다. 저장소의 자동 큐 실기 검증은 로컬 추천 경로를 중심으로 수행했습니다. 자세한 구현은 [AI 추천 문서](docs/AI-RECOMMENDATION.md)에 정리했습니다.
-
-## 데이터와 음질
-
-설정 → **데이터 · 네트워크**에서 다음을 조절합니다.
-
-- 오늘 앱 전체 수신·송신량과 모바일·요금제 연결 추정량
-- 일일 경고 ON/OFF 및 기준: 기본 500 MB, 100/250/500 MB·1/2 GB·없음
-- MP3 최대 192 kbps 권장 설정
-- 요금제 연결 자동 절약: 기본 OFF
-
-자동 절약을 켜면 모바일 또는 요금제 Wi-Fi에서 **새로 준비하는 곡**을 MP3 최대 192 kbps로 요청합니다. 이미 준비된 큐와 현재 곡은 유지합니다. 무제한 Wi-Fi에서는 원래 설정을 따르며 서버의 트랜스코딩 설정이 필요합니다.
-
-앱 자체 UID 카운터를 사용하므로 다른 앱의 사용량 접근 권한을 요구하지 않습니다. 모바일·요금제 구분은 샘플링 추정치이며 VPN·자정·재부팅·네트워크 전환 시 오차가 있을 수 있습니다. 통신사 청구량과 다르며, 경고가 재생을 중단하지는 않습니다.
-
-음질 배지는 **현재 입력 스트림** 기준입니다. DAC 출력·비트퍼펙트를 측정하지 않으며 MQA 디코더도 제공하지 않습니다.
-
-## 미디어 패널·잠금화면·인디케이터
-
-- 미디어 패널과 잠금화면 컨트롤은 Media3 MediaSession을 사용합니다. 알림 권한과 Android의 잠금화면 알림 설정을 확인하세요.
-- 곡 변경 팝업은 설정에서 조절합니다. 화면을 강제로 켜거나 잠금을 해제하지 않습니다.
-- 음질 인디케이터는 꺼짐 / 인앱 전용 / 다른 앱 위 표시를 선택합니다. 오버레이에는 Android 권한이 필요합니다.
-- 펀치홀 링·아일랜드는 **접힌 정방향 세로 화면**에서 표시합니다. 물리적 기울기·자이로는 사용하지 않습니다.
-- 링 크기, 아일랜드 너비, X/Y 위치를 슬라이더와 숫자로 조절합니다. 기기별 카메라 위치와 화면 설정에 맞춰 보정할 수 있습니다.
-
-## 검증과 한계
-
-현재 버전의 단위 테스트는 **72개 통과**, Lint 오류는 0개입니다. 삼성 기기와 Pixel Fold 에뮬레이터에서 재생·탐색·큐 편집·접힘/펼침을 확인했습니다.
-
-추천 최적화 전후의 12,288가지 정책 조합이 같은 결과를 반환했습니다. PC JVM의 해당 후보 검사 벤치마크는 약 45ms → 15ms였으며 앱 전체 속도·배터리 개선율을 뜻하지 않습니다.
-
-| 항목 | 확인 범위 |
-| --- | --- |
-| 원본 / 변환 재생 | 테스트 서버의 원본 및 192/320 kbps, 시간 진행·탐색 |
-| 자동 추천 | 로컬 대체, 장르 유지·직접 선택 시 전환·후보 부족 처리 |
-| ChatGPT | 전송·인증 구현과 입력/결과 검사, 실제 계정 응답은 별도 확인 필요 |
-| MusicBrainz | 매칭·캐시 로직, 외부 서비스 응답과 태그 품질에 의존 |
-| 데이터 | UID 집계와 요금제 조건 모의 검증, 실제 셀룰러 핸드오버·통신사 청구량 미검증 |
-
-장르·언어 태그가 잘못되었거나 없으면 추천 제한에도 한계가 있습니다. NOW PLAYING 뒤 배경은 창을 열 때의 고정 이미지이며 닫으면 실제 메인 화면으로 돌아갑니다.
-
-상세 결과: [현재 빌드 상태](BUILD-STATUS.md) · [버전별 검증](docs/testing/) · [변경 이력](CHANGELOG.md)
-
-## 코드 구성
-
-```text
-app/src/main/java/dev/navifold/player/
-  MainActivity.java          라이브러리·설정·연결 UI
-  NowPlayingSheet.java       현재 곡·메타데이터·AI 상태
-  PlaybackService.java       Media3 재생·미디어 세션
-  QueueSheet.java            큐 편집 UI
-  SmartPlayback.java         자동 보충·취향 기반 넘기기
-  SmartLibrary.java          계정별 SQLite 색인·감상 기록
-  FlowPolicy.java            장르·언어 흐름 제한
-  ChatGptPlan.java            계정 연결·모델·추천 전송
-  MusicMetadata.java         MusicBrainz 보완·캐시
-  NetworkUsage.java          자체 데이터 집계·경고
-app/src/qa/                  테스트 전용 receiver
-app/src/test/                단위 테스트
-tools/                       테스트용 Navidrome fixture
-```
-
-## 라이선스와 출처
-
-소스는 [GPL-3.0](LICENSE)으로 제공합니다. 디자인 구성은 [Sonixd](https://github.com/jeffvli/sonixd)를 참고했으며 Android 네이티브 UI로 구현했습니다.
-
-[Pretendard](https://github.com/orioncactus/pretendard) 가변 폰트는 SIL Open Font License 1.1, Material Design 벡터 아이콘은 Apache-2.0으로 제공됩니다. 포함 자산과 의존성 안내는 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md)를 참고하세요.
+[GPL-3.0](LICENSE). UI는 [Sonixd](https://github.com/jeffvli/sonixd)를 참고했습니다.
+폰트는 Pretendard를 사용하며, 자산별 출처는 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md)에 있습니다.
