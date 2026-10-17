@@ -43,7 +43,7 @@ final class SmartPlayback implements AutoCloseable {
         accountChanged();accrue();
         int reason=pendingReason;MediaItem item=pendingItem;pendingReason=-1;
         boolean auto=automaticTransition;automaticTransition=false;
-        finish(SmartPolicy.outcome(heard,active.optLong("duration")*1000,reason==Player.MEDIA_ITEM_TRANSITION_REASON_SEEK&&pendingForward,auto,activeError));
+        if(!SmartSession.consumeIgnoredRemoval(activeScope,active.optString("id")))finish(SmartPolicy.outcome(heard,active.optLong("duration")*1000,reason==Player.MEDIA_ITEM_TRANSITION_REASON_SEEK&&pendingForward,auto,activeError));
         activeError=false;
         pendingForward=false;heard=0;lastTick=SystemClock.elapsedRealtime();observed=item;active=metadata(item);activeScope=SmartSession.scope;
         if(!auto)consecutive=0;
@@ -135,7 +135,7 @@ final class SmartPlayback implements AutoCloseable {
                     fallback=true;selected=RecommendationBatch.local(candidates,10);
                 }
                 List<MediaItem> items=new ArrayList<>();
-                for(JSONObject song:selected)if(FlowPolicy.allows(anchorTags,song,flowMode)&&!library.negative(scope,song.optString("id"))){MediaItem item=PlaybackItems.make(api,song,playback.original,playback.bitrate,true);Bundle extras=new Bundle(item.mediaMetadata.extras);extras.putString(FLOW_ANCHOR,anchorTags.toString());items.add(item.buildUpon().setMediaMetadata(item.mediaMetadata.buildUpon().setExtras(extras).build()).build());}
+                for(JSONObject song:selected)if(FlowPolicy.allows(anchorTags,song,flowMode)&&!library.negative(scope,song.optString("id"))){MediaItem item=PlaybackItems.make(api,song,playback.original,playback.bitrate,true);Bundle extras=new Bundle(item.mediaMetadata.extras);extras.putString(FLOW_ANCHOR,anchorTags.toString());extras.putString(RecommendationReason.EXTRA,RecommendationReason.explain(flowSeed,song));items.add(item.buildUpon().setMediaMetadata(item.mediaMetadata.buildUpon().setExtras(extras).build()).build());}
                 boolean local=fallback;
                 main.post(()->{
                     setBusy(false);

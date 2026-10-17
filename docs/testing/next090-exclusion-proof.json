@@ -1,0 +1,11 @@
+{
+  "queueLongPress": true,
+  "explicitExclusionWithLearningOn": {
+    "eventsBefore": 6,
+    "eventsAfter": 6,
+    "remainingIds": [
+      "s000-0",
+      "s000-0"
+    ]
+  }
+}

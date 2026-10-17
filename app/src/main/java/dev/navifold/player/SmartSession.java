@@ -9,7 +9,15 @@ final class SmartSession {
     static volatile Api api;
     static volatile String scope = "";
     static volatile long revision;
+    private static String ignoredScope = "", ignoredId = "";
+    static synchronized void ignoreRemoval(String account, String id) { ignoredScope = account; ignoredId = id; }
+    static synchronized boolean consumeIgnoredRemoval(String account, String id) {
+        boolean ignored = !id.isEmpty() && ignoredScope.equals(account) && ignoredId.equals(id);
+        ignoredScope = ""; ignoredId = "";
+        return ignored;
+    }
     static synchronized void connect(Api client) {
+        ignoredScope = ""; ignoredId = "";
         api = client;
         scope = client == null ? "" : namespace(client.base, client.user);
         revision++;
