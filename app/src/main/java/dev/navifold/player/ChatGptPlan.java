@@ -40,7 +40,7 @@ final class ChatGptPlan {
     }
     String loginStatus(){return prefs().getString("login_status","");}
     private void loginStatus(String status){prefs().edit().putString("login_status",status).apply();}
-    void signIn(Activity activity) throws Exception {
+    void signIn(MainActivity activity) throws Exception {
         String stage="로그인 준비";
         try{
             JSONObject old=load();String host=prefs().getString("host","");
@@ -66,7 +66,7 @@ final class ChatGptPlan {
                         String path=line==null?"":line.split(" ").length>1?line.split(" ")[1]:"";
                         Uri u=Uri.parse("http://127.0.0.1"+path);
                         boolean valid="/auth/callback".equals(u.getPath())&&state.equals(u.getQueryParameter("state"));
-                        byte[] response=("HTTP/1.1 "+(valid?"200 OK":"400 Bad Request")+"\r\nContent-Type: text/plain; charset=utf-8\r\nCache-Control: no-store\r\nConnection: close\r\n\r\n"+(valid?"NaviFold: browser approval received. Return to the app to check the login result.":"Invalid callback.")).getBytes(StandardCharsets.UTF_8);
+                        byte[] response=("HTTP/1.1 "+(valid?"200 OK":"400 Bad Request")+"\r\nContent-Type: text/html; charset=utf-8\r\nCache-Control: no-store\r\nConnection: close\r\n\r\n"+(valid?LoginCallbackPage.html(context.getPackageName()):"Invalid callback.")).getBytes(StandardCharsets.UTF_8);
                         socket.getOutputStream().write(response);
                         if(valid){callback=u;break;}
                     }catch(SocketTimeoutException timeout){if(System.currentTimeMillis()>=until)break;}
@@ -80,6 +80,8 @@ final class ChatGptPlan {
                 String code=callback.getQueryParameter("code");if(code==null||code.isBlank())throw new IOException("로그인 코드가 전달되지 않았습니다");
                 // Retain only the issued registration before network I/O. Identity/tokens stay untrusted until verified.
                 if(OAuthRegistration.DYNAMIC.equals(requested))save(OAuthRegistration.pending(old,client));
+                stage="앱 복귀 대기";loginStatus(stage+" · NaviFold로 돌아오면 로그인을 마무리합니다");
+                activity.loginForeground.await(90000);
                 stage="로그인 코드 교환";loginStatus(stage);
                 JSONObject tokens=json(AUTH+"/api/accounts/oauth/token",form("grant_type","authorization_code","client_id",client,"code",code,"code_verifier",verifier,"redirect_uri",redirect,"resource",RESOURCE),null);
                 stage="계정 서명 확인";loginStatus(stage);

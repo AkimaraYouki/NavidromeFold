@@ -48,6 +48,7 @@ public class MainActivity extends Activity {
     int coverDp=128,albumOffset=0,loginRequest=0;
     volatile int session=0,albumRequest=0,detailRequest=0,indexRequest=0;
     volatile boolean destroyed=false;
+    final LoginForegroundGate loginForeground=new LoginForegroundGate();
     boolean albumLoading=false,albumEnd=false,albumFailed=false,indexLoading=false,indexFailed=false,folderAlbums=false;
     boolean detailVisible=false,wide=false,original=true; int lastColumnCount=-1;
     String serverText="",userText=""; AlertDialog connectionDialog;
@@ -421,7 +422,8 @@ public class MainActivity extends Activity {
     }
     void setTextIfChanged(TextView view,String value){if(!view.getText().toString().equals(value))view.setText(value);}
     @Override public void onRequestPermissionsResult(int request,String[] permissions,int[] result){super.onRequestPermissionsResult(request,permissions,result);if(request==31&&tab.equals("설정"))build();}
-    @Override protected void onResume(){super.onResume();if(settings!=null&&adapter!=null&&tab.equals("설정"))renderRows(false);}
+    @Override protected void onResume(){super.onResume();loginForeground.resumed(true);if(settings!=null&&adapter!=null&&tab.equals("설정"))renderRows(false);}
+    @Override protected void onPause(){loginForeground.resumed(false);super.onPause();}
     @Override protected void onStart(){super.onStart();AppVisibility.activities++;main.removeCallbacks(tick);main.post(tick);}
     @Override protected void onStop(){NetworkUsage.get(this).sample(true);AppVisibility.activities=Math.max(0,AppVisibility.activities-1);main.removeCallbacks(tick);super.onStop();}
     String formatTime(long ms){return String.format(Locale.ROOT,"%d:%02d",ms/60000,ms/1000%60);}
@@ -442,6 +444,7 @@ public class MainActivity extends Activity {
         else if(!tab.equals("폴더"))navigate("폴더");else super.onBackPressed();
     }
     @Override protected void onDestroy(){
+        loginForeground.close();
         if(nowPlayingSheet!=null)nowPlayingSheet.dismiss();destroyed=true;session++;songsRequest++;indexRequest++;albumRequest++;albumCountRequest++;detailRequest++;main.removeCallbacksAndMessages(null);network.shutdownNow();queueWork.shutdownNow();covers.close();
         if(controller!=null)controller.removeListener(playerListener);if(controllerFuture!=null)MediaController.releaseFuture(controllerFuture);
         moodSearch.cancel();if(connectionDialog!=null)connectionDialog.dismiss();api=null;super.onDestroy();

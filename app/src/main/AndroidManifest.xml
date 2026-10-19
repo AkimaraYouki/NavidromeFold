@@ -7,6 +7,7 @@
 <application android:icon="@drawable/ic_launcher" android:dataExtractionRules="@xml/data_extraction_rules" android:label="${appLabel}" android:theme="@style/AppTheme" android:allowBackup="false" android:usesCleartextTraffic="false" android:supportsRtl="true">
 <activity android:name=".MainActivity" android:launchMode="singleTop" android:exported="true" android:resizeableActivity="true" android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|keyboardHidden|fontScale|density|uiMode">
 <intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter>
+<intent-filter><action android:name="android.intent.action.VIEW"/><category android:name="android.intent.category.DEFAULT"/><category android:name="android.intent.category.BROWSABLE"/><data android:scheme="${applicationId}" android:host="login-return"/></intent-filter>
 </activity>
 <activity android:name=".LockPlayerActivity" android:exported="false" android:showWhenLocked="true" android:resizeableActivity="true" android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|fontScale|density|uiMode" />
 <service android:name=".PlaybackService" android:foregroundServiceType="mediaPlayback" android:exported="false"><intent-filter><action android:name="androidx.media3.session.MediaSessionService"/></intent-filter></service>
