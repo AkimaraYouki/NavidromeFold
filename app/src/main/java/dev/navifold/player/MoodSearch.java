@@ -44,7 +44,7 @@ final class MoodSearch {
                       .setNeutralButton("큐에 추가",(d,w)->{if(valid.getAsBoolean())a.editQueue(result,false);}).setNegativeButton("닫기",null).create();answer.show();
                     SmartStatus.record(a,(localResult?"LOCAL · 저장 데이터":"ChatGPT · 자연어")+" 추천 "+result.size()+"곡");
                 });
-            }catch(Exception e){a.main.post(()->{if(!valid.getAsBoolean())return;progress.dismiss();a.info("AI MUSIC",e instanceof java.io.IOException?e.getMessage():"추천을 완료하지 못했습니다 · 연결과 모델을 확인하세요");});}
+            }catch(Exception e){a.main.post(()->{if(!valid.getAsBoolean())return;progress.dismiss();a.info("AI MUSIC",NetworkFailure.message(e,"추천을 완료하지 못했습니다 · 연결과 모델을 확인하세요"));});}
             finally{a.main.post(()->{if(!valid.getAsBoolean()&&progress.isShowing())progress.dismiss();});}
         });
     }

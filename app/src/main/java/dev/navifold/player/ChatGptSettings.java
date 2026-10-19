@@ -7,8 +7,18 @@ import org.json.*;
 final class ChatGptSettings {
     private static final java.util.concurrent.atomic.AtomicBoolean signingIn=new java.util.concurrent.atomic.AtomicBoolean();
     interface Task {void run() throws Exception;}
-    static void execute(MainActivity a,String status,Task work){android.widget.Toast.makeText(a,status,android.widget.Toast.LENGTH_SHORT).show();a.network.execute(()->{try{work.run();}catch(Exception e){a.main.post(()->{if(!a.destroyed)a.info("ChatGPT",e instanceof java.io.IOException?e.getMessage():"처리하지 못했습니다. 연결·계정 권한을 확인하고 다시 시도하세요.");});}});}
-    static void show(MainActivity a){ChatGptPlan plan=new ChatGptPlan(a);new AlertDialog.Builder(a).setTitle("ChatGPT · "+plan.label()).setItems(new String[]{"Continue with ChatGPT","사용 가능한 모델","추천 10곡","사용량 · 앱 권한","연결 해제"},(d,w)->{if(w==0&&signingIn.compareAndSet(false,true))execute(a,"브라우저에서 로그인해 주세요",()->{try{plan.signIn(a);}finally{signingIn.set(false);}a.main.post(()->{if(!a.destroyed){a.renderRows(false);models(a,plan);}});});if(w==1)models(a,plan);if(w==2)recommend(a,plan);if(w==3)a.startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("https://chatgpt.com/#settings")));if(w==4)execute(a,"연결 해제 중",()->{plan.disconnect();a.main.post(()->{if(!a.destroyed)a.renderRows(false);});});}).setNegativeButton("닫기",null).show();}
+    static void execute(MainActivity a,String status,Task work){android.widget.Toast.makeText(a,status,android.widget.Toast.LENGTH_SHORT).show();a.network.execute(()->{try{work.run();}catch(Exception e){a.main.post(()->{if(!a.destroyed)a.info("ChatGPT",NetworkFailure.message(e,"처리하지 못했습니다. 연결·계정 권한을 확인하고 다시 시도하세요."));});}});}
+    static void show(MainActivity a){ChatGptPlan plan=new ChatGptPlan(a);new AlertDialog.Builder(a).setTitle("ChatGPT · "+plan.label()).setItems(new String[]{"Continue with ChatGPT","사용 가능한 모델","추천 10곡","사용량 · 앱 권한","연결 검사","연결 해제"},(d,w)->{if(w==0&&signingIn.compareAndSet(false,true))execute(a,"브라우저에서 로그인해 주세요",()->{try{plan.signIn(a);}finally{signingIn.set(false);}a.main.post(()->{if(!a.destroyed){a.renderRows(false);models(a,plan);}});});if(w==1)models(a,plan);if(w==2)recommend(a,plan);if(w==3)a.startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("https://chatgpt.com/#settings")));if(w==4)diagnose(a);if(w==5)execute(a,"연결 해제 중",()->{plan.disconnect();a.main.post(()->{if(!a.destroyed)a.renderRows(false);});});}).setNegativeButton("닫기",null).show();}
+    private static final java.util.concurrent.atomic.AtomicBoolean checking=new java.util.concurrent.atomic.AtomicBoolean();
+    static void diagnose(MainActivity a){
+        if(!checking.compareAndSet(false,true))return;
+        execute(a,"OpenAI 연결 확인 중",()->{
+            try{
+                String report=OpenAiNetworkCheck.run(a);
+                a.main.post(()->{if(!a.destroyed)a.info("OpenAI 연결 검사",report);});
+            }finally{checking.set(false);}
+        });
+    }
     static void models(MainActivity a,ChatGptPlan plan){execute(a,"계정 모델 확인 중",()->{JSONArray data=plan.models();List<String> names=new ArrayList<>(),slugs=new ArrayList<>();for(int i=0;i<data.length();i++){JSONObject m=data.getJSONObject(i);if("list".equals(m.optString("visibility"))&&!ChatGptPlan.excludedModel(m.optString("slug"))&&!ChatGptPlan.excludedModel(m.optString("display_name"))){names.add(m.optString("display_name",m.optString("slug")));slugs.add(m.getString("slug"));}}a.main.post(()->{if(a.destroyed)return;if(names.isEmpty()){a.info("ChatGPT","GPT-6을 제외한 사용 가능한 모델이 없습니다. 계정 권한을 확인하세요.");return;}new AlertDialog.Builder(a).setTitle("모델 선택").setItems(names.toArray(new String[0]),(d,w)->plan.model(slugs.get(w))).setNegativeButton("취소",null).show();});});}
     static void recommend(MainActivity a,ChatGptPlan plan){
         if(a.api==null){a.showConnection();return;}

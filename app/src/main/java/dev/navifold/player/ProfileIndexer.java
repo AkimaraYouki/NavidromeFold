@@ -31,7 +31,7 @@ final class ProfileIndexer {
                     Thread.sleep(1000);
                 }
                 if(valid.getAsBoolean()){String summary=db.profileSummary(scope);a.main.post(()->{if(valid.getAsBoolean())a.info("분석 완료",summary);});}
-            }catch(Exception e){a.main.post(()->{if(valid.getAsBoolean())a.info("AI 음악 데이터",e instanceof java.io.IOException?e.getMessage():"분석을 완료하지 못했습니다 · 연결·모델·한도 확인. 저장된 곡은 유지됩니다.");});}
+            }catch(Exception e){a.main.post(()->{if(valid.getAsBoolean())a.info("AI 음악 데이터",NetworkFailure.message(e,"분석을 완료하지 못했습니다 · 연결·모델·한도 확인. 저장된 곡은 유지됩니다."));});}
             finally{running.set(false);a.main.post(()->{if(progress.isShowing())progress.dismiss();});}
         });
     }
