@@ -41,6 +41,7 @@ public class MainActivity extends Activity {
     TextView pageHeading;int albumTotal=-1;volatile int albumCountRequest=0;boolean statusError=false;
     GridView grid; EntryAdapter adapter; LinearLayout detail, mini; TextView status, now, time,miniArtist,qualityStatus;
     Button retry;TransportButton toggle;SeekBar seek;NowPlayingSheet nowPlayingSheet;
+    final MoodSearch moodSearch=new MoodSearch(this);
     MediaController controller; ListenableFuture<MediaController> controllerFuture;
     String tab="폴더",sort="alphabeticalByArtist",albumQuery="",message="서버를 연결해 음악을 불러오세요",detailTitle="",selectedAlbumId="";
     String playerError=""; JSONObject selectedAlbum;
@@ -66,6 +67,7 @@ public class MainActivity extends Activity {
         main.post(tick);
         if(api==null)restoreConnection();else {resetAlbums();if(tab.equals("곡"))loadSongLibrary();}
     }
+    String versionLabel(){try{return getApplicationInfo().loadLabel(getPackageManager())+" "+getPackageManager().getPackageInfo(getPackageName(),0).versionName;}catch(Exception e){return "NaviFold Next";}}
     int dp(int n){return Math.round(n*getResources().getDisplayMetrics().density);}
     LinearLayout col(){LinearLayout v=new LinearLayout(this);v.setOrientation(LinearLayout.VERTICAL);return v;}
     GradientDrawable shape(int color,int radius){GradientDrawable d=new GradientDrawable();d.setColor(color);d.setCornerRadius(dp(radius));return d;}
@@ -98,6 +100,7 @@ public class MainActivity extends Activity {
         pageHeading=text(pageTitle(),22,INK);pageHeading.setLetterSpacing(.015f);pageHeading.setTypeface(UiAssets.semibold(this));header.addView(pageHeading,new LinearLayout.LayoutParams(0,-2,1));
         if(tab.equals("앨범"))header.addView(iconButton("⌕","앨범 검색",this::searchAlbums));if(tab.equals("곡"))header.addView(iconButton("⌕","곡 필터",this::filterSongLibrary));
         if(!detailVisible&&(tab.equals("앨범")||tab.equals("곡")||tab.equals("보관함"))){Button order=actionIcon(R.drawable.ic_sort,"정렬",()->showSort(false));header.addView(order,new LinearLayout.LayoutParams(dp(48),dp(48)));}
+        if(!tab.equals("설정"))header.addView(actionIcon(R.drawable.ic_auto_awesome,"AI 음악 검색",moodSearch::show),new LinearLayout.LayoutParams(dp(48),dp(48)));
         header.setMinimumHeight(getResources().getDimensionPixelSize(R.dimen.toolbar_height));content.addView(header);
         qualityStatus=text("",11,ACCENT);qualityStatus.setGravity(Gravity.END|Gravity.CENTER_VERTICAL);qualityStatus.setMinHeight(dp(32));qualityStatus.setMaxLines(2);qualityStatus.setMaxWidth(dp(Math.min(240,getResources().getConfiguration().screenWidthDp-40)));qualityStatus.setPadding(dp(12),dp(4),dp(12),dp(4));qualityStatus.setBackground(shape(SURFACE,12));LinearLayout.LayoutParams qualityLayout=new LinearLayout.LayoutParams(-2,-2);qualityLayout.gravity=Gravity.END;content.addView(qualityStatus,qualityLayout);
 
@@ -297,7 +300,7 @@ public class MainActivity extends Activity {
             adapter.rows.add(new Entry("영어 관사 제외",ignoreArticles()?"The / A / An 제외":"포함",null,"",()->{getPreferences(0).edit().putBoolean("ignoreArticles",!ignoreArticles()).apply();renderRows(false);}));
             adapter.rows.add(new Entry("곡 목록 새로고침",songsLoaded?allSongs.size()+" tracks":"",null,"",()->{songsLoaded=false;loadSongLibrary();}));
             adapter.rows.add(new Entry("앨범 목록 새로고침","",null,"",()->{albumQuery="";resetAlbums();}));
-            adapter.rows.add(new Entry("NaviFold 0.8.4","",null,"",()->info("NaviFold","Pretendard와 Material 벡터 아이콘을 사용하는 Android 음악 플레이어입니다.\n\n설정에서 ChatGPT 로그인·계정 모델 선택·추천 목록 재생을 사용할 수 있습니다. SMART DJ에서 자동 큐 보충·취향 기반 자동 넘기기를 사용할 수 있습니다. 오프라인 다운로드와 스마트 플레이리스트 편집은 아직 구현하지 않았습니다.")));
+            adapter.rows.add(new Entry(versionLabel(),"",null,"",()->info("NaviFold","Pretendard와 Material 벡터 아이콘을 사용하는 Android 음악 플레이어입니다.\n\n설정에서 ChatGPT 로그인·계정 모델 선택·추천 목록 재생을 사용할 수 있습니다. SMART DJ에서 자동 큐 보충·취향 기반 자동 넘기기를 사용할 수 있습니다. 오프라인 다운로드와 스마트 플레이리스트 편집은 아직 구현하지 않았습니다.")));
 
         }
         adapter.notifyDataSetChanged();resizeGrid();if(state!=null)grid.onRestoreInstanceState(state);else if(reset)grid.setSelection(0);
@@ -441,7 +444,7 @@ public class MainActivity extends Activity {
     @Override protected void onDestroy(){
         if(nowPlayingSheet!=null)nowPlayingSheet.dismiss();destroyed=true;session++;songsRequest++;indexRequest++;albumRequest++;albumCountRequest++;detailRequest++;main.removeCallbacksAndMessages(null);network.shutdownNow();queueWork.shutdownNow();covers.close();
         if(controller!=null)controller.removeListener(playerListener);if(controllerFuture!=null)MediaController.releaseFuture(controllerFuture);
-        if(connectionDialog!=null)connectionDialog.dismiss();api=null;super.onDestroy();
+        moodSearch.cancel();if(connectionDialog!=null)connectionDialog.dismiss();api=null;super.onDestroy();
     }
     static final class Entry {
         final String title,subtitle,cover; JSONObject song;final JSONObject album;final Runnable action;

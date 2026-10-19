@@ -1,0 +1,28 @@
+{
+  "missing": {
+    "action": "missing",
+    "count": 3,
+    "index": 0,
+    "status": "LOCAL · 2곡 추가 · 태그 일부 없음",
+    "ids": [
+      "missing-0",
+      "missing-1",
+      "missing-2"
+    ],
+    "passed": true
+  },
+  "replay": {
+    "action": "replay",
+    "count": 5,
+    "index": 2,
+    "status": "LOCAL · 2곡 추가 · 최근 곡 재허용",
+    "ids": [
+      "replay-0",
+      "replay-1",
+      "replay-2",
+      "replay-0",
+      "replay-1"
+    ],
+    "passed": true
+  }
+}

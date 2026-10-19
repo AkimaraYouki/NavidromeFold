@@ -11,14 +11,15 @@ final class SmartSettings {
     private static final AtomicBoolean indexing=new AtomicBoolean();
     static void show(MainActivity a){
         SharedPreferences p=SmartPlayback.settings(a);String scope=SmartSession.scope;
-        String[] rows={"자동 큐 보충 · "+on(p,"autoplay"),"취향 기반 자동 넘기기 · "+on(p,"skip"),"감상 기록 학습 · "+on(p,"learn"),"연결 실패 시 로컬 추천 · "+(p.getBoolean("fallback",true)?"ON":"OFF"),"곡·장르·레이블·가수·앨범 검색","라이브러리 데이터 갱신","현재 곡 더 듣기","현재 곡 덜 듣기","현재 곡 선호 초기화","데이터 · 상태","이 계정 감상 데이터 삭제","MusicBrainz 정보 보완 · "+on(p,"external"),"장르 유지 · "+FlowPolicy.LABELS[Math.max(0,Math.min(2,p.getInt("flowMode",1)))]};
-        new AlertDialog.Builder(a).setTitle("SMART DJ").setItems(rows,(d,w)->{
-            if(w==12)new AlertDialog.Builder(a).setTitle("장르 유지").setSingleChoiceItems(FlowPolicy.LABELS,Math.max(0,Math.min(2,p.getInt("flowMode",1))),(x,y)->{p.edit().putInt("flowMode",y).apply();SmartSession.changed();x.dismiss();show(a);}).setNeutralButton("설명",(x,y)->a.info("장르 유지","엄격하게: 같은 장르 태그만. 자연스럽게: Pop/Synth-pop 등 가까운 장르까지. 두 모드 모두 J-pop/K-pop 등의 명시된 음악권과 알려진 언어 충돌을 제한합니다. 다양하게: 장르 제한 없이 추천합니다. 태그가 없는 곡의 언어를 추측하지 않습니다. 변경은 다음 보충부터 적용됩니다.")).setNegativeButton("닫기",null).show();
+        String[] rows={"자동 큐 보충 · "+on(p,"autoplay"),"취향 기반 자동 넘기기 · "+on(p,"skip"),"감상 기록 학습 · "+on(p,"learn"),"연결 실패 시 로컬 추천 · "+(p.getBoolean("fallback",true)?"ON":"OFF"),"곡·장르·레이블·가수·앨범 검색","라이브러리 데이터 갱신","현재 곡 더 듣기","현재 곡 덜 듣기","현재 곡 선호 초기화","데이터 · 상태","이 계정 감상 데이터 삭제","MusicBrainz 정보 보완 · "+on(p,"external"),"장르 유지 · "+FlowPolicy.LABELS[Math.max(0,Math.min(2,p.getInt("flowMode",1)))],"앨범·곡 분위기 데이터"};
+        a.dialog().setTitle("SMART DJ").setItems(rows,(d,w)->{
+            if(w==13)ProfileIndexer.show(a);
+            if(w==12)new AlertDialog.Builder(a).setTitle("장르 유지").setSingleChoiceItems(FlowPolicy.LABELS,Math.max(0,Math.min(2,p.getInt("flowMode",1))),(x,y)->{p.edit().putInt("flowMode",y).apply();SmartSession.changed();x.dismiss();show(a);}).setNeutralButton("설명",(x,y)->a.info("장르 유지","엄격하게: 같은 장르 태그만. 자연스럽게: 가까운 장르를 먼저 찾고, 없으면 빠진 태그를 보완한 뒤 태그가 없는 곡도 후보로 사용합니다. 두 모드 모두 J-pop/K-pop 등의 명시된 음악권과 알려진 언어 충돌을 제한합니다. 다양하게: 장르 제한 없이 추천합니다. 태그가 없는 곡의 언어를 추측하지 않습니다. 변경은 다음 보충부터 적용됩니다.")).setNegativeButton("닫기",null).show();
             if(w==0)toggle(a,p,"autoplay",true);
             if(w==1)toggle(a,p,"skip",false);
             if(w==2)toggle(a,p,"learn",false);
             if(w==3){p.edit().putBoolean("fallback",!p.getBoolean("fallback",true)).apply();SmartSession.changed();show(a);}
-            if(w==4)search(a);
+            if(w==4)new AlertDialog.Builder(a).setTitle("음악 찾기").setItems(new String[]{"AI · 분위기와 상황으로 추천","곡 · 장르 · 가수 검색"},(x,y)->{if(y==0)a.moodSearch.show();else search(a);}).show();
             if(w==5)index(a);
             if(w>=6&&w<=8){JSONObject song=SmartPlayback.metadata(a.controller==null?null:a.controller.getCurrentMediaItem());if(scope.isEmpty()||song.optString("id").isEmpty()){a.info("SMART DJ","먼저 곡을 재생하세요");return;}int vote=w==6?1:w==7?-1:0;a.network.execute(()->SmartLibrary.get(a).vote(scope,song,vote));}
             if(w==9)ChatGptSettings.execute(a,"데이터 확인 중",()->{String text=SmartLibrary.get(a).summary(scope)+"\n"+p.getString("status","대기 중")+"\n\n보충: 남은 곡 3개 이하에서 최대 10곡. ChatGPT 자동 요청 최소 2분 간격·시간당 6회. 실패 시 점차 대기 시간을 늘립니다.\n\n학습: 실제 들은 시간만 집계합니다. 자동 넘김·네트워크 오류·일시정지는 싫어요로 학습하지 않습니다. 자동 넘기기는 추천으로 추가한 곡에만 적용하며 연속 최대 2곡입니다. 반복·셔플 중에는 큐를 보충하지 않습니다.\n\n데이터는 이 휴대폰 내부에 서버·계정별로 저장합니다.";a.main.post(()->{if(!a.destroyed)a.info("SMART DJ",text);});});

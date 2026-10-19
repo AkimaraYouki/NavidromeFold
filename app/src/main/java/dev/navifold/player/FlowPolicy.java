@@ -20,12 +20,17 @@ final class FlowPolicy {
   Profile(JSONObject song){genres=genres(song);scenes=scenes(song,genres);languages=languages(song);families=new HashSet<>();for(String g:genres)families.add(family(g));artist=norm(song.optString("albumArtist",song.optString("artist")));}
  }
  static final class Matcher {
-  final Profile anchor;final int mode;
-  Matcher(JSONObject song,int mode){this.mode=mode;anchor=mode==2?null:new Profile(song);}
+  final Profile anchor;final int mode;final boolean missing;
+  Matcher(JSONObject song,int mode){this(song,mode,false);}
+  Matcher(JSONObject song,int mode,boolean missing){this.mode=mode;this.missing=missing&&mode==1;anchor=mode==2?null:new Profile(song);}
   boolean allows(JSONObject song){return mode==2||allows(new Profile(song));}
   private boolean allows(Profile candidate){
    if(!anchor.languages.isEmpty()&&!candidate.languages.isEmpty()&&!overlaps(anchor.languages,candidate.languages))return false;
-   if(!anchor.scenes.equals(candidate.scenes)&&(!anchor.scenes.isEmpty()||!candidate.scenes.isEmpty()))return false;
+   if(missing&&anchor.genres.isEmpty()&&anchor.scenes.isEmpty())return true;
+   if(!anchor.scenes.equals(candidate.scenes)&&(!anchor.scenes.isEmpty()||!candidate.scenes.isEmpty())){
+    if(!missing||!candidate.genres.isEmpty()||anchor.scenes.isEmpty())return false;
+   }
+   if(missing&&(anchor.genres.isEmpty()||candidate.genres.isEmpty()))return true;
    if(anchor.genres.isEmpty())return mode!=0&&!anchor.artist.isEmpty()&&anchor.artist.equals(candidate.artist);
    if(candidate.genres.isEmpty())return false;
    if(overlaps(anchor.genres,candidate.genres))return true;
@@ -38,6 +43,6 @@ final class FlowPolicy {
   return anchor.optString("id").isEmpty()||!song.optString("albumId").equals(anchor.optString("albumId"))||song.optString("albumId").isEmpty()&&!song.optString("id").equals(anchor.optString("id"));
  }
  static List<JSONObject> filter(List<JSONObject> songs,JSONObject anchor,int mode){List<JSONObject> out=new ArrayList<>();Matcher matcher=new Matcher(anchor,mode);for(JSONObject song:songs)if(matcher.allows(song))out.add(song);return out;}
- static JSONObject anchorTags(JSONObject stored,JSONObject original){JSONObject source=SongMetadata.safe(original);for(String key:new String[]{"genre","language","musicScene"})if(source.optString(key).trim().isEmpty())source.remove(key);for(String key:new String[]{"genres","languages"})if(source.optJSONArray(key)!=null&&source.optJSONArray(key).length()==0)source.remove(key);return SongMetadata.merge(stored,source);}
+ static JSONObject anchorTags(JSONObject stored,JSONObject original){JSONObject source=SongMetadata.safe(original);for(String key:new String[]{"genre","language","musicScene"})if(source.optString(key).trim().isEmpty())source.remove(key);for(String key:new String[]{"genres","languages"})if(source.optJSONArray(key)!=null&&source.optJSONArray(key).length()==0)source.remove(key);return SongMetadata.complete(stored,source);}
  static String constraint(JSONObject anchor,int mode){return "Maintain the USER-SELECTED anchor, not a drifting chain of suggested tracks. Mode: "+LABELS[Math.max(0,Math.min(2,mode))]+". Anchor genre="+genres(anchor)+", explicit scene="+scenes(anchor)+", tagged language="+languages(anchor)+". Unknown language is unknown; never infer language or nationality from artist names. Do not broaden constraints when candidates are scarce.";}
 }

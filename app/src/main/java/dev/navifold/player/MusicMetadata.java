@@ -12,23 +12,23 @@ final class MusicMetadata {
         long wait=nextRequest-android.os.SystemClock.elapsedRealtime();if(wait>0)Thread.sleep(wait);
         nextRequest=android.os.SystemClock.elapsedRealtime()+1100;
         HttpURLConnection c=ChatGptPlan.connection("https://musicbrainz.org/ws/2/"+path,"GET",null);
-        c.setRequestProperty("User-Agent","NaviFold/0.7.7 (local open-source Navidrome player)");c.setReadTimeout(15000);
+        c.setRequestProperty("User-Agent","NaviFold/0.7.7 (local open-source Navidrome player)");c.setConnectTimeout(3000);c.setReadTimeout(4000);
         try{if(c.getResponseCode()!=200)throw new java.io.IOException("MusicBrainz metadata unavailable");return new JSONObject(ChatGptPlan.read(c.getInputStream(),2*1024*1024));}finally{c.disconnect();}
     }
     private static String normalized(String value){return value.toLowerCase(Locale.ROOT).replaceAll("[^\\p{L}\\p{N}]","");}
     private static String quote(String value){return "\""+value.replace("\\"," ").replace("\""," ")+"\"";}
     static List<JSONObject> enrich(SmartLibrary db,String scope,List<JSONObject> candidates,BooleanSupplier valid) throws Exception {return enrich(db,scope,candidates,valid,true);}
     static List<JSONObject> enrich(SmartLibrary db,String scope,List<JSONObject> candidates,BooleanSupplier valid,boolean persistTracks) throws Exception {
-        List<JSONObject> out=new ArrayList<>();int fetched=0;
+        List<JSONObject> out=new ArrayList<>();int fetched=0;long deadline=android.os.SystemClock.elapsedRealtime()+6000;
         for(JSONObject song:candidates){
             if(!valid.getAsBoolean())throw new InterruptedException();
             String artist=song.optString("albumArtist",song.optString("artist")),album=song.optString("album");String cacheKey=artist+"\n"+album;
             JSONObject data=db.enrichment(scope,cacheKey);
-            if(data==null&&fetched<3&&!artist.isEmpty()&&!album.isEmpty()) {
+            if(data==null&&fetched<3&&android.os.SystemClock.elapsedRealtime()<deadline&&!artist.isEmpty()&&!album.isEmpty()) {
                 fetched++;
                 try {data=lookup(artist,album);db.cacheEnrichment(scope,cacheKey,data);}catch(Exception e){data=new JSONObject();if(e instanceof InterruptedException)throw e;}
             }
-            JSONObject merged=data==null?song:SongMetadata.merge(data,song);if(persistTracks)db.put(scope,merged,System.currentTimeMillis());out.add(merged);
+            JSONObject merged=data==null?song:SongMetadata.complete(data,song);if(persistTracks)db.put(scope,merged,System.currentTimeMillis());out.add(merged);
         }
         return out;
     }

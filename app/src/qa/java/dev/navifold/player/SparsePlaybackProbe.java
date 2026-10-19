@@ -1,0 +1,14 @@
+package dev.navifold.player;
+import android.content.*;import android.os.*;import androidx.media3.common.*;import androidx.media3.session.*;import org.json.*;import java.util.*;
+/** Exercises the service's actual append checks, not just its candidate generator. */
+public final class SparsePlaybackProbe extends BroadcastReceiver {
+ public void onReceive(Context receiver,Intent intent){Context c=receiver.getApplicationContext();PendingResult result=goAsync();Handler main=new Handler(Looper.getMainLooper());boolean replay="replay".equals(intent.getStringExtra("action"));new Thread(()->{try{
+  Api api=new Api("http://127.0.0.1:18765","demo","demo");SmartSession.connect(api);String scope=SmartSession.scope;SmartLibrary db=SmartLibrary.get(c);db.clear(scope);c.getSharedPreferences("catalog-sync",0).edit().putLong(scope,System.currentTimeMillis()).commit();
+  List<MediaItem> queue=new ArrayList<>();for(int n=0;n<3;n++){JSONObject s=new JSONObject().put("id",(replay?"replay-":"missing-")+n).put("title","Synthetic "+n).put("artist","Fixture Artist "+n).put("genre",replay||n==0?"Jazz":"").put("duration",120);db.put(scope,s,System.currentTimeMillis());queue.add(PlaybackItems.make(api,s,true,192,false));}
+  SmartPlayback.settings(c).edit().putBoolean("autoplay",false).putBoolean("external",false).putBoolean("learn",false).putBoolean("skip",false).putBoolean("fallback",true).putInt("flowMode",1).apply();
+  com.google.common.util.concurrent.ListenableFuture<MediaController> f=new MediaController.Builder(c,new SessionToken(c,new ComponentName(c,PlaybackService.class))).buildAsync();f.addListener(()->{try{MediaController p=f.get();p.setRepeatMode(Player.REPEAT_MODE_OFF);p.setShuffleModeEnabled(false);if(replay)p.setMediaItems(queue,2,0);else p.setMediaItem(queue.get(0));p.prepare();p.play();SmartPlayback.settings(c).edit().putBoolean("autoplay",true).apply();SmartSession.changed();main.postDelayed(()->{try{
+   JSONObject proof=new JSONObject().put("action",replay?"replay":"missing").put("count",p.getMediaItemCount()).put("index",p.getCurrentMediaItemIndex()).put("status",SmartPlayback.settings(c).getString("status",""));JSONArray ids=new JSONArray();for(int n=0;n<p.getMediaItemCount();n++)ids.put(p.getMediaItemAt(n).mediaId);proof.put("ids",ids).put("passed",p.getMediaItemCount()==(replay?5:3));try(java.io.FileOutputStream out=c.openFileOutput("sparse-playback-proof.json",0)){out.write(proof.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));}result.setResultData(proof.toString());
+   }catch(Exception e){result.setResultData("failed "+e.getClass().getSimpleName());}finally{p.pause();p.release();result.finish();}},4500);
+  }catch(Exception e){result.setResultData("failed "+e.getClass().getSimpleName());result.finish();}},main::post);
+ }catch(Exception e){result.setResultData("failed "+e.getClass().getSimpleName());result.finish();}},"sparse-playback").start();}
+}

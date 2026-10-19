@@ -15,13 +15,12 @@ final class ChatGptSettings {
         new AlertDialog.Builder(a).setTitle("추천 10곡").setMessage("후보 최대 40곡의 음악 태그와 최근 감상 요약을 OpenAI에 보냅니다. 음원 파일은 보내지 않습니다. ChatGPT 플랜 사용량에 반영됩니다.").setNegativeButton("취소",null).setPositiveButton("추천",(d,w)->{
             Api api=a.api;int session=a.session;String scope=SmartSession.scope;long revision=SmartSession.revision;
             JSONObject seed=SmartPlayback.metadata(a.controller==null?null:a.controller.getCurrentMediaItem());
+            Set<String> queue=new HashSet<>();if(a.controller!=null)for(int n=0;n<a.controller.getMediaItemCount();n++)queue.add(a.controller.getMediaItemAt(n).mediaId);
+            int mode=seed.optString("id").isEmpty()?2:SmartPlayback.settings(a).getInt("flowMode",1);
             execute(a,"추천 준비 중",()->{
-                SmartLibrary db=SmartLibrary.get(a);Set<String> excluded=db.recent(scope);excluded.add(seed.optString("id"));
-                List<JSONObject> candidates=db.candidates(scope,seed,excluded,40);
-                if(candidates.isEmpty()){for(JSONObject song:Library.array(api.call("getRandomSongs","size","100").optJSONObject("randomSongs"),"song"))db.put(scope,song,System.currentTimeMillis());candidates=db.candidates(scope,seed,excluded,40);}
-                if(candidates.isEmpty())throw new java.io.IOException("추천 후보가 없습니다. 라이브러리 데이터를 갱신하세요");
-                if(SmartPlayback.settings(a).getBoolean("external",true))candidates=MusicMetadata.enrich(db,scope,candidates,()->revision==SmartSession.revision);
-                List<JSONObject> selected=RecommendationBatch.select(plan.recommend(RecommendationBatch.flowPrompt(candidates,seed,db.context(scope))),candidates);
+                SmartLibrary db=SmartLibrary.get(a);
+                AutoplayCandidates.Pool pool=AutoplayCandidates.load(a,api,scope,seed,seed,mode,queue,()->!a.destroyed&&revision==SmartSession.revision,text->{});
+                List<JSONObject> selected=RecommendationBatch.select(plan.recommend(RecommendationBatch.flowPrompt(pool.songs,pool.seed,db.context(scope))+"\n"+FlowPolicy.constraint(pool.anchor,mode)),pool.songs);
                 a.main.post(()->{
                     if(a.destroyed||session!=a.session||revision!=SmartSession.revision)return;
                     StringBuilder text=new StringBuilder();for(JSONObject song:selected)text.append(song.optString("title")).append(" · ").append(Library.artist(song)).append('\n');

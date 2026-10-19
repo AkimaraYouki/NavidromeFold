@@ -26,9 +26,11 @@ final class Api {
         for (int i=0; i<args.length; i+=2) b.appendQueryParameter(args[i], args[i+1]);
         return b.build().toString();
     }
-    JSONObject call(String method, String... args) throws Exception {
+    JSONObject call(String method, String... args) throws Exception {return callWithTimeout(method,12000,20000,args);}
+    JSONObject quick(String method,String... args)throws Exception{return callWithTimeout(method,3000,4000,args);}
+    private JSONObject callWithTimeout(String method,int connectTimeout,int readTimeout,String... args)throws Exception {
         HttpURLConnection c = (HttpURLConnection) new URL(url(method, args)).openConnection();
-        c.setConnectTimeout(12000); c.setReadTimeout(20000);
+        c.setConnectTimeout(connectTimeout); c.setReadTimeout(readTimeout);
         c.setInstanceFollowRedirects(false);
         try {
             int status = c.getResponseCode();

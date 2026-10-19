@@ -6,7 +6,7 @@ import java.util.*;
 /** Only music metadata crosses the player boundary; never copy API URLs or credentials. */
 final class SongMetadata {
     static final String EXTRA="navifold.song.metadata";
-    private static final String[] KEYS={"language","languages","musicScene","id","title","artist","albumArtist","album","year","genre","genres","artists","albumArtists","discNumber","track","duration","suffix","contentType","bitRate","samplingRate","channelCount","bitDepth","size","path","bpm","comment","releaseDate","originalReleaseDate","coverArt","albumId","recordLabels","label","musicBrainzId","musicBrainzReleaseId","starred","metadataSource","metadataReleaseId"};
+    private static final String[] KEYS={"aiMoods","aiEnergy","aiInstrumental","aiConfidence","language","languages","musicScene","id","title","artist","albumArtist","album","year","genre","genres","artists","albumArtists","discNumber","track","duration","suffix","contentType","bitRate","samplingRate","channelCount","bitDepth","size","path","bpm","comment","releaseDate","originalReleaseDate","coverArt","albumId","recordLabels","label","musicBrainzId","musicBrainzReleaseId","starred","metadataSource","metadataReleaseId"};
     static JSONObject safe(JSONObject source){
         JSONObject out=new JSONObject();
         if(source==null)return out;
@@ -19,6 +19,11 @@ final class SongMetadata {
         }return out;
     }
     static JSONObject merge(JSONObject older,JSONObject newer){JSONObject out=safe(older),fresh=safe(newer);Iterator<String> it=fresh.keys();while(it.hasNext()){String key=it.next();try{out.put(key,fresh.get(key));}catch(JSONException ignored){}}return out;}
+    static JSONObject complete(JSONObject older,JSONObject newer){
+        JSONObject fresh=safe(newer);Iterator<String> keys=fresh.keys();List<String> empty=new ArrayList<>();
+        while(keys.hasNext()){String key=keys.next();Object v=fresh.opt(key);if(v instanceof String&&((String)v).trim().isEmpty()||v instanceof JSONArray&&((JSONArray)v).length()==0||v instanceof JSONObject&&((JSONObject)v).length()==0||v instanceof Number&&((Number)v).doubleValue()<=0)empty.add(key);}
+        for(String key:empty)fresh.remove(key);return merge(older,fresh);
+    }
     static String value(JSONObject j,String key){Object v=j.opt(key);if(v==null||v==JSONObject.NULL)return "";return String.valueOf(v).trim();}
     static String names(JSONObject j,String array,String fallback){JSONArray a=j.optJSONArray(array);List<String> names=new ArrayList<>();if(a!=null)for(int i=0;i<a.length();i++){Object v=a.opt(i);String name=v instanceof JSONObject?((JSONObject)v).optString("name",""):String.valueOf(v);if(!name.isEmpty())names.add(name);}return names.isEmpty()?value(j,fallback):String.join(", ",names);}
     static String year(JSONObject j){if(j.optInt("year")>0)return String.valueOf(j.optInt("year"));JSONObject date=j.optJSONObject("releaseDate");return date!=null&&date.optInt("year")>0?String.valueOf(date.optInt("year")):"정보 없음";}

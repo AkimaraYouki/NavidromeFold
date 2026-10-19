@@ -1,0 +1,992 @@
+{
+  "natural": {
+    "action": "natural",
+    "queue": [
+      {
+        "id": "s000-0",
+        "title": "Track 1 - Album 000",
+        "artist": "Artist 00",
+        "albumArtist": "Artist 00",
+        "album": "Album 000",
+        "year": 2000,
+        "genre": "Pop",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 00/Album 000/01.wav",
+        "coverArt": "c000",
+        "albumId": "a000",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": false,
+        "anchor": ""
+      },
+      {
+        "id": "s012-0",
+        "title": "Track 1 - Album 012",
+        "artist": "Artist 00",
+        "albumArtist": "Artist 00",
+        "album": "Album 012",
+        "year": 2012,
+        "genre": "Pop",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 00/Album 012/01.wav",
+        "coverArt": "c012",
+        "albumId": "a012",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s024-0",
+        "title": "Track 1 - Album 024",
+        "artist": "Artist 00",
+        "albumArtist": "Artist 00",
+        "album": "Album 024",
+        "year": 2024,
+        "genre": "Pop",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 00/Album 024/01.wav",
+        "coverArt": "c024",
+        "albumId": "a024",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s027-0",
+        "title": "Track 1 - Album 027",
+        "artist": "Artist 03",
+        "albumArtist": "Artist 03",
+        "album": "Album 027",
+        "year": 2002,
+        "genre": "Pop",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 03/Album 027/01.wav",
+        "coverArt": "c027",
+        "albumId": "a027",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s028-0",
+        "title": "Track 1 - Album 028",
+        "artist": "Artist 04",
+        "albumArtist": "Artist 04",
+        "album": "Album 028",
+        "year": 2003,
+        "genre": "Pop",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 04/Album 028/01.wav",
+        "coverArt": "c028",
+        "albumId": "a028",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s002-0",
+        "title": "Track 1 - Album 002",
+        "artist": "Artist 02",
+        "albumArtist": "Artist 02",
+        "album": "Album 002",
+        "year": 2002,
+        "genre": "Pop",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 02/Album 002/01.wav",
+        "coverArt": "c002",
+        "albumId": "a002",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s025-0",
+        "title": "Track 1 - Album 025",
+        "artist": "Artist 01",
+        "albumArtist": "Artist 01",
+        "album": "Album 025",
+        "year": 2000,
+        "genre": "Pop",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 01/Album 025/01.wav",
+        "coverArt": "c025",
+        "albumId": "a025",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s007-0",
+        "title": "Track 1 - Album 007",
+        "artist": "Artist 07",
+        "albumArtist": "Artist 07",
+        "album": "Album 007",
+        "year": 2007,
+        "genre": "Pop",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 07/Album 007/01.wav",
+        "coverArt": "c007",
+        "albumId": "a007",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s003-0",
+        "title": "Track 1 - Album 003",
+        "artist": "Artist 03",
+        "albumArtist": "Artist 03",
+        "album": "Album 003",
+        "year": 2003,
+        "genre": "Pop",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 03/Album 003/01.wav",
+        "coverArt": "c003",
+        "albumId": "a003",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s026-0",
+        "title": "Track 1 - Album 026",
+        "artist": "Artist 02",
+        "albumArtist": "Artist 02",
+        "album": "Album 026",
+        "year": 2001,
+        "genre": "Pop",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 02/Album 026/01.wav",
+        "coverArt": "c026",
+        "albumId": "a026",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s010-0",
+        "title": "Track 1 - Album 010",
+        "artist": "Artist 10",
+        "albumArtist": "Artist 10",
+        "album": "Album 010",
+        "year": 2010,
+        "genre": "Pop",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 10/Album 010/01.wav",
+        "coverArt": "c010",
+        "albumId": "a010",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      }
+    ],
+    "status": "LOCAL · 10곡 추가"
+  },
+  "drift": {
+    "action": "drift",
+    "queue": [
+      {
+        "id": "s000-0",
+        "title": "Track 1 - Album 000",
+        "artist": "Artist 00",
+        "albumArtist": "Artist 00",
+        "album": "Album 000",
+        "year": 2000,
+        "genre": "Pop",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 00/Album 000/01.wav",
+        "coverArt": "c000",
+        "albumId": "a000",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": false,
+        "anchor": ""
+      },
+      {
+        "id": "s012-0",
+        "title": "Track 1 - Album 012",
+        "artist": "Artist 00",
+        "albumArtist": "Artist 00",
+        "album": "Album 012",
+        "year": 2012,
+        "genre": "Pop",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 00/Album 012/01.wav",
+        "coverArt": "c012",
+        "albumId": "a012",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s024-0",
+        "title": "Track 1 - Album 024",
+        "artist": "Artist 00",
+        "albumArtist": "Artist 00",
+        "album": "Album 024",
+        "year": 2024,
+        "genre": "Pop",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 00/Album 024/01.wav",
+        "coverArt": "c024",
+        "albumId": "a024",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s027-0",
+        "title": "Track 1 - Album 027",
+        "artist": "Artist 03",
+        "albumArtist": "Artist 03",
+        "album": "Album 027",
+        "year": 2002,
+        "genre": "Pop",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 03/Album 027/01.wav",
+        "coverArt": "c027",
+        "albumId": "a027",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s015-0",
+        "title": "Track 1 - Album 015",
+        "artist": "Artist 03",
+        "albumArtist": "Artist 03",
+        "album": "Album 015",
+        "year": 2015,
+        "genre": "Pop",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 03/Album 015/01.wav",
+        "coverArt": "c015",
+        "albumId": "a015",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s003-0",
+        "title": "Track 1 - Album 003",
+        "artist": "Artist 03",
+        "albumArtist": "Artist 03",
+        "album": "Album 003",
+        "year": 2003,
+        "genre": "Pop",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 03/Album 003/01.wav",
+        "coverArt": "c003",
+        "albumId": "a003",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s025-0",
+        "title": "Track 1 - Album 025",
+        "artist": "Artist 01",
+        "albumArtist": "Artist 01",
+        "album": "Album 025",
+        "year": 2000,
+        "genre": "Pop",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 01/Album 025/01.wav",
+        "coverArt": "c025",
+        "albumId": "a025",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s006-0",
+        "title": "Track 1 - Album 006",
+        "artist": "Artist 06",
+        "albumArtist": "Artist 06",
+        "album": "Album 006",
+        "year": 2006,
+        "genre": "Pop",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 06/Album 006/01.wav",
+        "coverArt": "c006",
+        "albumId": "a006",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s007-0",
+        "title": "Track 1 - Album 007",
+        "artist": "Artist 07",
+        "albumArtist": "Artist 07",
+        "album": "Album 007",
+        "year": 2007,
+        "genre": "Pop",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 07/Album 007/01.wav",
+        "coverArt": "c007",
+        "albumId": "a007",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s009-0",
+        "title": "Track 1 - Album 009",
+        "artist": "Artist 09",
+        "albumArtist": "Artist 09",
+        "album": "Album 009",
+        "year": 2009,
+        "genre": "Pop",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 09/Album 009/01.wav",
+        "coverArt": "c009",
+        "albumId": "a009",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s021-0",
+        "title": "Track 1 - Album 021",
+        "artist": "Artist 09",
+        "albumArtist": "Artist 09",
+        "album": "Album 021",
+        "year": 2021,
+        "genre": "Pop",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 09/Album 021/01.wav",
+        "coverArt": "c021",
+        "albumId": "a021",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s029-0",
+        "title": "Track 1 - Album 029",
+        "artist": "Artist 05",
+        "albumArtist": "Artist 05",
+        "album": "Album 029",
+        "year": 2004,
+        "genre": "Pop",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 05/Album 029/01.wav",
+        "coverArt": "c029",
+        "albumId": "a029",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s011-0",
+        "title": "Track 1 - Album 011",
+        "artist": "Artist 11",
+        "albumArtist": "Artist 11",
+        "album": "Album 011",
+        "year": 2011,
+        "genre": "Pop",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 11/Album 011/01.wav",
+        "coverArt": "c011",
+        "albumId": "a011",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s019-0",
+        "title": "Track 1 - Album 019",
+        "artist": "Artist 07",
+        "albumArtist": "Artist 07",
+        "album": "Album 019",
+        "year": 2019,
+        "genre": "Pop",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 07/Album 019/01.wav",
+        "coverArt": "c019",
+        "albumId": "a019",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      }
+    ],
+    "status": "LOCAL · 10곡 추가"
+  },
+  "switch": {
+    "action": "switch",
+    "queue": [
+      {
+        "id": "s000-2",
+        "title": "Track 3 - Album 000",
+        "artist": "Artist 00",
+        "albumArtist": "Artist 00",
+        "album": "Album 000",
+        "year": 2000,
+        "genre": "J-pop",
+        "discNumber": 1,
+        "track": 3,
+        "duration": 120,
+        "path": "Artist 00/Album 000/03.wav",
+        "coverArt": "c000",
+        "albumId": "a000",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": false,
+        "anchor": ""
+      },
+      {
+        "id": "s024-2",
+        "title": "Track 3 - Album 024",
+        "artist": "Artist 00",
+        "albumArtist": "Artist 00",
+        "album": "Album 024",
+        "year": 2024,
+        "genre": "J-pop",
+        "discNumber": 1,
+        "track": 3,
+        "duration": 120,
+        "path": "Artist 00/Album 024/03.wav",
+        "coverArt": "c024",
+        "albumId": "a024",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-2"
+      },
+      {
+        "id": "s012-2",
+        "title": "Track 3 - Album 012",
+        "artist": "Artist 00",
+        "albumArtist": "Artist 00",
+        "album": "Album 012",
+        "year": 2012,
+        "genre": "J-pop",
+        "discNumber": 1,
+        "track": 3,
+        "duration": 120,
+        "path": "Artist 00/Album 012/03.wav",
+        "coverArt": "c012",
+        "albumId": "a012",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-2"
+      },
+      {
+        "id": "s002-2",
+        "title": "Track 3 - Album 002",
+        "artist": "Artist 02",
+        "albumArtist": "Artist 02",
+        "album": "Album 002",
+        "year": 2002,
+        "genre": "J-pop",
+        "discNumber": 1,
+        "track": 3,
+        "duration": 120,
+        "path": "Artist 02/Album 002/03.wav",
+        "coverArt": "c002",
+        "albumId": "a002",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-2"
+      },
+      {
+        "id": "s026-2",
+        "title": "Track 3 - Album 026",
+        "artist": "Artist 02",
+        "albumArtist": "Artist 02",
+        "album": "Album 026",
+        "year": 2001,
+        "genre": "J-pop",
+        "discNumber": 1,
+        "track": 3,
+        "duration": 120,
+        "path": "Artist 02/Album 026/03.wav",
+        "coverArt": "c026",
+        "albumId": "a026",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-2"
+      },
+      {
+        "id": "s003-2",
+        "title": "Track 3 - Album 003",
+        "artist": "Artist 03",
+        "albumArtist": "Artist 03",
+        "album": "Album 003",
+        "year": 2003,
+        "genre": "J-pop",
+        "discNumber": 1,
+        "track": 3,
+        "duration": 120,
+        "path": "Artist 03/Album 003/03.wav",
+        "coverArt": "c003",
+        "albumId": "a003",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-2"
+      },
+      {
+        "id": "s028-2",
+        "title": "Track 3 - Album 028",
+        "artist": "Artist 04",
+        "albumArtist": "Artist 04",
+        "album": "Album 028",
+        "year": 2003,
+        "genre": "J-pop",
+        "discNumber": 1,
+        "track": 3,
+        "duration": 120,
+        "path": "Artist 04/Album 028/03.wav",
+        "coverArt": "c028",
+        "albumId": "a028",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-2"
+      },
+      {
+        "id": "s001-2",
+        "title": "Track 3 - Album 001",
+        "artist": "Artist 01",
+        "albumArtist": "Artist 01",
+        "album": "Album 001",
+        "year": 2001,
+        "genre": "J-pop",
+        "discNumber": 1,
+        "track": 3,
+        "duration": 120,
+        "path": "Artist 01/Album 001/03.wav",
+        "coverArt": "c001",
+        "albumId": "a001",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-2"
+      },
+      {
+        "id": "s013-2",
+        "title": "Track 3 - Album 013",
+        "artist": "Artist 01",
+        "albumArtist": "Artist 01",
+        "album": "Album 013",
+        "year": 2013,
+        "genre": "J-pop",
+        "discNumber": 1,
+        "track": 3,
+        "duration": 120,
+        "path": "Artist 01/Album 013/03.wav",
+        "coverArt": "c013",
+        "albumId": "a013",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-2"
+      },
+      {
+        "id": "s009-2",
+        "title": "Track 3 - Album 009",
+        "artist": "Artist 09",
+        "albumArtist": "Artist 09",
+        "album": "Album 009",
+        "year": 2009,
+        "genre": "J-pop",
+        "discNumber": 1,
+        "track": 3,
+        "duration": 120,
+        "path": "Artist 09/Album 009/03.wav",
+        "coverArt": "c009",
+        "albumId": "a009",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-2"
+      },
+      {
+        "id": "s029-2",
+        "title": "Track 3 - Album 029",
+        "artist": "Artist 05",
+        "albumArtist": "Artist 05",
+        "album": "Album 029",
+        "year": 2004,
+        "genre": "J-pop",
+        "discNumber": 1,
+        "track": 3,
+        "duration": 120,
+        "path": "Artist 05/Album 029/03.wav",
+        "coverArt": "c029",
+        "albumId": "a029",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-2"
+      }
+    ],
+    "status": "LOCAL · 10곡 추가"
+  },
+  "scarce": {
+    "action": "scarce",
+    "queue": [
+      {
+        "id": "s000-0",
+        "title": "Track 1 - Album 000",
+        "artist": "Artist 00",
+        "albumArtist": "Artist 00",
+        "album": "Album 000",
+        "year": 2000,
+        "genre": "Classical",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 00/Album 000/01.wav",
+        "coverArt": "c000",
+        "albumId": "a000",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": false,
+        "anchor": ""
+      }
+    ],
+    "status": "엄격 모드에 맞는 곡이 없습니다 · 자연스럽게 모드에서 다시 추천 가능"
+  },
+  "diverse": {
+    "action": "diverse",
+    "queue": [
+      {
+        "id": "s000-0",
+        "title": "Track 1 - Album 000",
+        "artist": "Artist 00",
+        "albumArtist": "Artist 00",
+        "album": "Album 000",
+        "year": 2000,
+        "genre": "Classical",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 00/Album 000/01.wav",
+        "coverArt": "c000",
+        "albumId": "a000",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": false,
+        "anchor": ""
+      },
+      {
+        "id": "s012-0",
+        "title": "Track 1 - Album 012",
+        "artist": "Artist 00",
+        "albumArtist": "Artist 00",
+        "album": "Album 012",
+        "year": 2012,
+        "genre": "Pop",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 00/Album 012/01.wav",
+        "coverArt": "c012",
+        "albumId": "a012",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s012-1",
+        "title": "Track 2 - Album 012",
+        "artist": "Artist 00",
+        "albumArtist": "Artist 00",
+        "album": "Album 012",
+        "year": 2012,
+        "genre": "Synth-pop",
+        "discNumber": 1,
+        "track": 2,
+        "duration": 120,
+        "path": "Artist 00/Album 012/02.wav",
+        "coverArt": "c012",
+        "albumId": "a012",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s003-2",
+        "title": "Track 3 - Album 003",
+        "artist": "Artist 03",
+        "albumArtist": "Artist 03",
+        "album": "Album 003",
+        "year": 2003,
+        "genre": "J-pop",
+        "discNumber": 1,
+        "track": 3,
+        "duration": 120,
+        "path": "Artist 03/Album 003/03.wav",
+        "coverArt": "c003",
+        "albumId": "a003",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s006-1",
+        "title": "Track 2 - Album 006",
+        "artist": "Artist 06",
+        "albumArtist": "Artist 06",
+        "album": "Album 006",
+        "year": 2006,
+        "genre": "Synth-pop",
+        "discNumber": 1,
+        "track": 2,
+        "duration": 120,
+        "path": "Artist 06/Album 006/02.wav",
+        "coverArt": "c006",
+        "albumId": "a006",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s027-1",
+        "title": "Track 2 - Album 027",
+        "artist": "Artist 03",
+        "albumArtist": "Artist 03",
+        "album": "Album 027",
+        "year": 2002,
+        "genre": "Synth-pop",
+        "discNumber": 1,
+        "track": 2,
+        "duration": 120,
+        "path": "Artist 03/Album 027/02.wav",
+        "coverArt": "c027",
+        "albumId": "a027",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s028-2",
+        "title": "Track 3 - Album 028",
+        "artist": "Artist 04",
+        "albumArtist": "Artist 04",
+        "album": "Album 028",
+        "year": 2003,
+        "genre": "J-pop",
+        "discNumber": 1,
+        "track": 3,
+        "duration": 120,
+        "path": "Artist 04/Album 028/03.wav",
+        "coverArt": "c028",
+        "albumId": "a028",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s025-0",
+        "title": "Track 1 - Album 025",
+        "artist": "Artist 01",
+        "albumArtist": "Artist 01",
+        "album": "Album 025",
+        "year": 2000,
+        "genre": "Pop",
+        "discNumber": 1,
+        "track": 1,
+        "duration": 120,
+        "path": "Artist 01/Album 025/01.wav",
+        "coverArt": "c025",
+        "albumId": "a025",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s001-1",
+        "title": "Track 2 - Album 001",
+        "artist": "Artist 01",
+        "albumArtist": "Artist 01",
+        "album": "Album 001",
+        "year": 2001,
+        "genre": "Synth-pop",
+        "discNumber": 1,
+        "track": 2,
+        "duration": 120,
+        "path": "Artist 01/Album 001/02.wav",
+        "coverArt": "c001",
+        "albumId": "a001",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s026-2",
+        "title": "Track 3 - Album 026",
+        "artist": "Artist 02",
+        "albumArtist": "Artist 02",
+        "album": "Album 026",
+        "year": 2001,
+        "genre": "J-pop",
+        "discNumber": 1,
+        "track": 3,
+        "duration": 120,
+        "path": "Artist 02/Album 026/03.wav",
+        "coverArt": "c026",
+        "albumId": "a026",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      },
+      {
+        "id": "s010-2",
+        "title": "Track 3 - Album 010",
+        "artist": "Artist 10",
+        "albumArtist": "Artist 10",
+        "album": "Album 010",
+        "year": 2010,
+        "genre": "J-pop",
+        "discNumber": 1,
+        "track": 3,
+        "duration": 120,
+        "path": "Artist 10/Album 010/03.wav",
+        "coverArt": "c010",
+        "albumId": "a010",
+        "recordLabels": [
+          "Fixture Records"
+        ],
+        "suggested": true,
+        "anchor": "s000-0"
+      }
+    ],
+    "status": "LOCAL · 10곡 추가"
+  }
+}

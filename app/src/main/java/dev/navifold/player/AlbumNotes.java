@@ -13,6 +13,7 @@ final class AlbumNotes {
         LinearLayout card=a.col();card.setPadding(a.dp(12),a.dp(10),a.dp(12),a.dp(10));card.setBackground(GlassUi.panel(a,a.settings.dark,16,86));
         LinearLayout title=new LinearLayout(a);title.setGravity(Gravity.CENTER_VERTICAL);TextView heading=a.text("ALBUM NOTES",10,a.MUTED);title.addView(heading,new LinearLayout.LayoutParams(0,-2,1));Button generate=a.button("AI",()->{});generate.setContentDescription("AI 앨범 요약");generate.setTextSize(12);title.addView(generate,new LinearLayout.LayoutParams(a.dp(48),a.dp(48)));card.addView(title);
         TextView metadata=a.text("",11,a.MUTED);metadata.setMaxLines(3);metadata.setEllipsize(android.text.TextUtils.TruncateAt.END);card.addView(metadata);
+        TextView mood=a.text("",11,a.MUTED);mood.setMaxLines(2);mood.setVisibility(View.GONE);card.addView(mood);mood.setOnClickListener(v->ProfileIndexer.show(a));
         TextView summary=a.text("",12,a.MUTED);summary.setMaxLines(4);summary.setEllipsize(android.text.TextUtils.TruncateAt.END);summary.setVisibility(View.GONE);card.addView(summary);
         JSONObject source=SongMetadata.safe(tracks.get(0));try{for(String key:new String[]{"artist","albumArtist","year","recordLabels","label","genre","genres"})if(album.has(key))source.put(key,album.get(key));source.put("album",Library.title(album));}catch(JSONException ignored){}
         final JSONObject[] current={source};String scope=SmartSession.scope,id=album.optString("id");int auth=a.session,request=a.detailRequest;
@@ -21,7 +22,7 @@ final class AlbumNotes {
         metadataWorker.execute(()->{
             try{
                 if(!valid.getAsBoolean())return;
-                SmartLibrary db=SmartLibrary.get(a);JSONObject enriched=source;
+                SmartLibrary db=SmartLibrary.get(a);String moodText=db.albumMood(scope,tracks);a.main.post(()->{if(valid.getAsBoolean()&&!moodText.isEmpty()){mood.setText(moodText);mood.setVisibility(View.VISIBLE);}});JSONObject enriched=source;
                 if(SmartPlayback.settings(a).getBoolean("external",true))enriched=MusicMetadata.enrich(db,scope,Collections.singletonList(source),valid,false).get(0);
                 JSONObject result=enriched;String cached=db.albumNote(scope,id,fingerprint(result,tracks));
                 a.main.post(()->{if(!valid.getAsBoolean())return;current[0]=result;metadata.setText(info(result));if(!cached.isEmpty()){summary.setText("AI · "+cached);summary.setVisibility(View.VISIBLE);}});
