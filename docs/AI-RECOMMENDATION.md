@@ -59,3 +59,10 @@ ChatGPT 자동 보충 요청은 최소 2분 간격·시간당 최대 6회입니�
 계정 추론은 [OpenAI 공식 모델·추론 문서](https://developers.openai.com/siwc/token-sharing-open-source/models-and-inference)의 흐름을 따르며 기존 OAuth·`store=false`·`stream=true`·완료 이벤트 확인을 재사용합니다.
 
 [검증 보고서](testing/v091-report.md) · [README](../README.md)
+
+
+### ChatGPT 로그인
+
+Next는 기존 앱과 계정 저장 공간이 별도입니다. 최초 등록에서는 NaviFold라는 이름을 사용자가 수정할 수 있습니다. 승인 뒤 통신이 실패해도 발급된 등록 ID는 보관해 재로그인에 재사용하며, 계정·토큰은 서명과 신원을 검증한 뒤 저장합니다.
+설정 → ChatGPT 추천의 **최근 로그인 상태**에서 승인 대기·코드 교환·계정 서명 확인 등 마지막 단계를 확인할 수 있습니다. **연결 검사**는 로그인 없이 서버 도달 여부만 확인합니다.
+공식 흐름: [Registration and sign-in](https://developers.openai.com/siwc/token-sharing-open-source/sign-in).

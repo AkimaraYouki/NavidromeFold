@@ -25,7 +25,7 @@ final class ChatGptPlan {
     private android.content.SharedPreferences prefs(){return context.getSharedPreferences("chatgpt-plan",0);}
     private javax.crypto.SecretKey key() throws Exception {KeyStore s=KeyStore.getInstance("AndroidKeyStore");s.load(null);String alias=context.getPackageName()+".chatgpt";if(!s.containsAlias(alias)){KeyGenerator g=KeyGenerator.getInstance("AES","AndroidKeyStore");g.init(new KeyGenParameterSpec.Builder(alias,KeyProperties.PURPOSE_ENCRYPT|KeyProperties.PURPOSE_DECRYPT).setBlockModes(KeyProperties.BLOCK_MODE_GCM).setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE).build());g.generateKey();}return (javax.crypto.SecretKey)s.getKey(alias,null);}
     synchronized JSONObject load() throws Exception {String v=prefs().getString("vault","");if(v.isEmpty())return new JSONObject();String[] parts=v.split(":");Cipher c=Cipher.getInstance("AES/GCM/NoPadding");c.init(Cipher.DECRYPT_MODE,key(),new GCMParameterSpec(128,Base64.decode(parts[0],Base64.NO_WRAP)));return new JSONObject(new String(c.doFinal(Base64.decode(parts[1],Base64.NO_WRAP)),StandardCharsets.UTF_8));}
-    private synchronized void save(JSONObject data) throws Exception {Cipher c=Cipher.getInstance("AES/GCM/NoPadding");c.init(Cipher.ENCRYPT_MODE,key());prefs().edit().putString("vault",Base64.encodeToString(c.getIV(),Base64.NO_WRAP)+":"+Base64.encodeToString(c.doFinal(data.toString().getBytes(StandardCharsets.UTF_8)),Base64.NO_WRAP)).commit();}
+    private synchronized void save(JSONObject data) throws Exception {Cipher c=Cipher.getInstance("AES/GCM/NoPadding");c.init(Cipher.ENCRYPT_MODE,key());if(!prefs().edit().putString("vault",Base64.encodeToString(c.getIV(),Base64.NO_WRAP)+":"+Base64.encodeToString(c.doFinal(data.toString().getBytes(StandardCharsets.UTF_8)),Base64.NO_WRAP)).commit())throw new IOException("로그인 정보를 저장하지 못했습니다");}
     String label(){try{JSONObject t=load();return t.has("access_token")?t.optString("email","ChatGPT account"):"연결 안 됨";}catch(Exception e){return "다시 연결 필요";}}
     private static String random(){byte[] b=new byte[32];new SecureRandom().nextBytes(b);return b64(b);}
     private static String b64(byte[] b){return Base64.encodeToString(b,Base64.URL_SAFE|Base64.NO_PADDING|Base64.NO_WRAP);}
@@ -33,22 +33,66 @@ final class ChatGptPlan {
     static HttpURLConnection connection(String url,String method,String bearer) throws Exception {HttpURLConnection c=(HttpURLConnection)new URL(url).openConnection();c.setRequestMethod(method);c.setConnectTimeout(15000);c.setReadTimeout(60000);c.setInstanceFollowRedirects(false);if(bearer!=null)c.setRequestProperty("Authorization","Bearer "+bearer);return c;}
     static String read(InputStream in,int limit) throws Exception {try(InputStream stream=in;ByteArrayOutputStream out=new ByteArrayOutputStream()){byte[] b=new byte[4096];int n;while((n=stream.read(b))!=-1){if(out.size()+n>limit)throw new IOException("응답 크기 초과");out.write(b,0,n);}return out.toString("UTF-8");}}
     static JSONObject json(String url,String body,String bearer) throws Exception {HttpURLConnection c=connection(url,body==null?"GET":"POST",bearer);try{if(body!=null){c.setDoOutput(true);c.setRequestProperty("Content-Type","application/x-www-form-urlencoded");try(OutputStream out=c.getOutputStream()){out.write(body.getBytes(StandardCharsets.UTF_8));}}int status=c.getResponseCode();if(status!=200)throw new IOException("ChatGPT HTTP "+status+" · 계정 권한·한도 또는 연결을 확인하세요");return new JSONObject(read(c.getInputStream(),2*1024*1024));}finally{c.disconnect();}}
+    static final class SignInFailure extends IOException {
+        SignInFailure(String stage,Exception cause){
+            super(stage+" · "+NetworkFailure.message(cause,"완료하지 못했습니다. 다시 시도해 주세요."),cause);
+        }
+    }
+    String loginStatus(){return prefs().getString("login_status","");}
+    private void loginStatus(String status){prefs().edit().putString("login_status",status).apply();}
     void signIn(Activity activity) throws Exception {
-        JSONObject old=load();String host=prefs().getString("host","");if(host.isEmpty()){host="urn:uuid:"+UUID.randomUUID();prefs().edit().putString("host",host).commit();}
-        String state=random(),nonce=random(),verifier=random(),client=old.optString("client_id","dynamic_agent_client");
-        try(ServerSocket server=new ServerSocket(0,4,InetAddress.getByName("127.0.0.1"))){server.setSoTimeout(180000);String redirect="http://127.0.0.1:"+server.getLocalPort()+"/auth/callback";
-            Uri.Builder url=Uri.parse(AUTH+"/api/accounts/authorize").buildUpon().appendQueryParameter("client_id",client).appendQueryParameter("ext_agent_host_id",host).appendQueryParameter("response_type","code").appendQueryParameter("redirect_uri",redirect).appendQueryParameter("scope","openid profile email offline_access resource.invoke chatgpt.tokens.use.direct").appendQueryParameter("resource",RESOURCE).appendQueryParameter("state",state).appendQueryParameter("nonce",nonce).appendQueryParameter("code_challenge_method","S256").appendQueryParameter("code_challenge",b64(MessageDigest.getInstance("SHA-256").digest(verifier.getBytes(StandardCharsets.US_ASCII))));
-            if(client.equals("dynamic_agent_client"))url.appendQueryParameter("agent_name_hint","NaviFold");
-            activity.runOnUiThread(()->{try{activity.startActivity(new Intent(Intent.ACTION_VIEW,url.build()));}catch(Exception e){try{server.close();}catch(Exception ignored){}}});
-            long until=System.currentTimeMillis()+180000;Uri callback=null;
-            while(System.currentTimeMillis()<until){try(Socket socket=server.accept()){socket.setSoTimeout(3000);String line=new BufferedReader(new InputStreamReader(socket.getInputStream(),StandardCharsets.US_ASCII)).readLine();String path=line==null?"":line.split(" ").length>1?line.split(" ")[1]:"";Uri u=Uri.parse("http://127.0.0.1"+path);boolean valid="/auth/callback".equals(u.getPath())&&state.equals(u.getQueryParameter("state"));byte[] response=("HTTP/1.1 "+(valid?"200 OK":"400 Bad Request")+"\r\nContent-Type: text/plain; charset=utf-8\r\nConnection: close\r\n\r\n"+(valid?"Return to NaviFold.":"Invalid callback.")).getBytes(StandardCharsets.UTF_8);socket.getOutputStream().write(response);if(valid){callback=u;break;}}}
-            if(callback==null)throw new IOException("로그인 시간이 만료되었습니다");if(callback.getQueryParameter("error")!=null)throw new IOException("로그인이 취소되었거나 플랜 사용이 허용되지 않았습니다");
-            String issued=callback.getQueryParameter("client_id");if(client.equals("dynamic_agent_client")){if(issued==null||issued.equals(client))throw new IOException("클라이언트 등록 미완료");client=issued;}else if(issued!=null&&!client.equals(issued))throw new IOException("로그인 등록 불일치");
-            String code=callback.getQueryParameter("code");if(code==null)throw new IOException("로그인 코드 없음");
-            JSONObject tokens=json(AUTH+"/api/accounts/oauth/token",form("grant_type","authorization_code","client_id",client,"code",code,"code_verifier",verifier,"redirect_uri",redirect,"resource",RESOURCE),null);
-            JSONObject identity=validate(tokens.getString("id_token"),client,nonce);
-            if(old.has("sub")&&!old.getString("sub").equals(identity.getString("sub")))throw new IOException("기존 계정과 다릅니다. 연결 해제 후 다시 로그인하세요");
-            tokens.put("client_id",client).put("sub",identity.getString("sub")).put("email",identity.optString("email","ChatGPT account")).put("expires_at",System.currentTimeMillis()+tokens.getLong("expires_in")*1000L);save(tokens);SmartSession.changed();
+        String stage="로그인 준비";
+        try{
+            JSONObject old=load();String host=prefs().getString("host","");
+            if(host.isEmpty()){host="urn:uuid:"+UUID.randomUUID();if(!prefs().edit().putString("host",host).commit())throw new IOException("기기 등록 정보를 저장하지 못했습니다");}
+            String state=random(),nonce=random(),verifier=random(),client=OAuthRegistration.client(old);
+            try(ServerSocket server=new ServerSocket(0,4,InetAddress.getByName("127.0.0.1"))){
+                server.setSoTimeout(180000);String redirect="http://127.0.0.1:"+server.getLocalPort()+"/auth/callback";
+                Uri.Builder url=Uri.parse(AUTH+"/api/accounts/authorize").buildUpon().appendQueryParameter("client_id",client).appendQueryParameter("ext_agent_host_id",host).appendQueryParameter("response_type","code").appendQueryParameter("redirect_uri",redirect).appendQueryParameter("scope","openid profile email offline_access resource.invoke chatgpt.tokens.use.direct").appendQueryParameter("resource",RESOURCE).appendQueryParameter("state",state).appendQueryParameter("nonce",nonce).appendQueryParameter("code_challenge_method","S256").appendQueryParameter("code_challenge",b64(MessageDigest.getInstance("SHA-256").digest(verifier.getBytes(StandardCharsets.US_ASCII))));
+                if(OAuthRegistration.DYNAMIC.equals(client))url.appendQueryParameter("agent_name_hint","NaviFold");
+                else if(OAuthRegistration.hintsAllowed(old,client)){
+                    if(!old.optString("id_token").isEmpty())url.appendQueryParameter("id_token_hint",old.optString("id_token"));
+                    if(!old.optString("email").isEmpty())url.appendQueryParameter("login_hint",old.optString("email"));
+                }
+                stage="브라우저 승인 대기";loginStatus(stage+" · 승인 후 NaviFold로 돌아와 주세요");
+                java.util.concurrent.atomic.AtomicReference<Exception> browserFailure=new java.util.concurrent.atomic.AtomicReference<>();
+                activity.runOnUiThread(()->{try{activity.startActivity(new Intent(Intent.ACTION_VIEW,url.build()));}catch(Exception e){browserFailure.set(e);try{server.close();}catch(Exception ignored){}}});
+                long until=System.currentTimeMillis()+180000;Uri callback=null;
+                while(System.currentTimeMillis()<until){
+                    server.setSoTimeout((int)Math.max(1,until-System.currentTimeMillis()));
+                    try(Socket socket=server.accept()){
+                        socket.setSoTimeout(3000);
+                        String line=new BufferedReader(new InputStreamReader(socket.getInputStream(),StandardCharsets.US_ASCII)).readLine();
+                        String path=line==null?"":line.split(" ").length>1?line.split(" ")[1]:"";
+                        Uri u=Uri.parse("http://127.0.0.1"+path);
+                        boolean valid="/auth/callback".equals(u.getPath())&&state.equals(u.getQueryParameter("state"));
+                        byte[] response=("HTTP/1.1 "+(valid?"200 OK":"400 Bad Request")+"\r\nContent-Type: text/plain; charset=utf-8\r\nCache-Control: no-store\r\nConnection: close\r\n\r\n"+(valid?"NaviFold: browser approval received. Return to the app to check the login result.":"Invalid callback.")).getBytes(StandardCharsets.UTF_8);
+                        socket.getOutputStream().write(response);
+                        if(valid){callback=u;break;}
+                    }catch(SocketTimeoutException timeout){if(System.currentTimeMillis()>=until)break;}
+                    catch(SocketException closed){if(browserFailure.get()!=null)throw new IOException("로그인 브라우저를 열지 못했습니다",browserFailure.get());throw closed;}
+                }
+                if(callback==null)throw new IOException("승인 시간이 만료되었습니다. 브라우저에서 승인 후 다시 시도하세요.");
+                stage="브라우저 승인 확인";
+                if(callback.getQueryParameter("error")!=null)throw new IOException("로그인이 취소되었거나 ChatGPT 플랜 사용이 허용되지 않았습니다");
+                String requested=client;
+                client=OAuthRegistration.issued(requested,callback.getQueryParameter("client_id"));
+                String code=callback.getQueryParameter("code");if(code==null||code.isBlank())throw new IOException("로그인 코드가 전달되지 않았습니다");
+                // Retain only the issued registration before network I/O. Identity/tokens stay untrusted until verified.
+                if(OAuthRegistration.DYNAMIC.equals(requested))save(OAuthRegistration.pending(old,client));
+                stage="로그인 코드 교환";loginStatus(stage);
+                JSONObject tokens=json(AUTH+"/api/accounts/oauth/token",form("grant_type","authorization_code","client_id",client,"code",code,"code_verifier",verifier,"redirect_uri",redirect,"resource",RESOURCE),null);
+                stage="계정 서명 확인";loginStatus(stage);
+                JSONObject identity=validate(tokens.getString("id_token"),client,nonce);
+                if(old.has("sub")&&!old.getString("sub").equals(identity.getString("sub")))throw new IOException("기존 계정과 다릅니다. 기존 계정으로 다시 로그인하세요");
+                stage="로그인 저장";
+                tokens.put("client_id",client).put("sub",identity.getString("sub")).put("email",identity.optString("email","ChatGPT account")).put("expires_at",System.currentTimeMillis()+tokens.getLong("expires_in")*1000L);
+                save(tokens);SmartSession.changed();
+                if(!Arrays.asList(tokens.optString("scope").split(" ")).contains("chatgpt.tokens.use.direct"))throw new IOException("계정은 연결됐지만 ChatGPT 플랜 사용 권한이 없습니다. 브라우저의 권한 설정을 확인하세요.");
+                loginStatus("로그인 완료");
+            }
+        }catch(Exception cause){
+            SignInFailure failure=new SignInFailure(stage,cause);loginStatus(failure.getMessage());throw failure;
         }
     }
     static JSONObject validate(String jwt,String client,String nonce) throws Exception {String[] p=jwt.split("\\.");if(p.length!=3)throw new GeneralSecurityException("ID 토큰 형식 오류");JSONObject header=new JSONObject(new String(Base64.decode(p[0],Base64.URL_SAFE),StandardCharsets.UTF_8));if(!"RS256".equals(header.optString("alg")))throw new GeneralSecurityException("지원하지 않는 서명");JSONObject discovery=json(AUTH+"/.well-known/openid-configuration",null,null);String jwks=discovery.getString("jwks_uri");if(!jwks.startsWith(AUTH+"/"))throw new GeneralSecurityException("잘못된 인증 서버");JSONArray keys=json(jwks,null,null).getJSONArray("keys");boolean verified=false;for(int i=0;i<keys.length();i++){JSONObject k=keys.getJSONObject(i);if(!header.getString("kid").equals(k.optString("kid"))||!"RSA".equals(k.optString("kty")))continue;PublicKey key=KeyFactory.getInstance("RSA").generatePublic(new RSAPublicKeySpec(new BigInteger(1,Base64.decode(k.getString("n"),Base64.URL_SAFE)),new BigInteger(1,Base64.decode(k.getString("e"),Base64.URL_SAFE))));Signature s=Signature.getInstance("SHA256withRSA");s.initVerify(key);s.update((p[0]+"."+p[1]).getBytes(StandardCharsets.US_ASCII));verified=s.verify(Base64.decode(p[2],Base64.URL_SAFE));break;}if(!verified)throw new GeneralSecurityException("ID 토큰 서명 불일치");JSONObject c=new JSONObject(new String(Base64.decode(p[1],Base64.URL_SAFE),StandardCharsets.UTF_8));Object aud=c.opt("aud");boolean audience=client.equals(aud);if(aud instanceof JSONArray){audience=false;JSONArray a=(JSONArray)aud;for(int i=0;i<a.length();i++)audience|=client.equals(a.optString(i));if(a.length()>1&&!client.equals(c.optString("azp")))audience=false;}if(!AUTH.equals(c.optString("iss"))||!audience||!nonce.equals(c.optString("nonce"))||c.optLong("exp")<=System.currentTimeMillis()/1000||c.optLong("nbf")>System.currentTimeMillis()/1000+60||c.optString("sub").isEmpty())throw new GeneralSecurityException("ID 토큰 검증 실패");return c;}
